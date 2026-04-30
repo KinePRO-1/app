@@ -5520,7 +5520,7 @@ function applyHomeVisibility() {
 
 function persistUIState(skipCloud = false) {
   try {
-    localStorage.setItem('kinepro_ui_state', JSON.stringify({
+    localStorage.setItem('kinepro_pc_optimizado_ui_state', JSON.stringify({
       profName: state.profName,
       theme: state.theme,
       accent: state.accent,
@@ -5533,7 +5533,7 @@ function persistUIState(skipCloud = false) {
 
 function restoreUIState() {
   try {
-    const raw = localStorage.getItem('kinepro_ui_state');
+    const raw = localStorage.getItem('kinepro_pc_optimizado_ui_state');
     if (!raw) return;
     const saved = JSON.parse(raw);
     if (saved.profName) state.profName = saved.profName;
@@ -5584,7 +5584,7 @@ function updateBadges() {
 }
 
 
-const firebaseConfig = {
+const firebaseConfig = window.KINEPRO_FIREBASE_CONFIG || {
   apiKey: "AIzaSyDBFPOHtc3LtwBcaifGc2TWaMzWReWmq_4",
   authDomain: "kinepro-8a56b.firebaseapp.com",
   projectId: "kinepro-8a56b",
@@ -5601,9 +5601,10 @@ let cloudApplying = false;
 let cloudSaveTimer = null;
 let lastCloudWrite = 0;
 let cloudBootstrapDone = false;
-const CLOUD_INSTALLATION_KEY = 'kinepro_installation_id';
-const CLOUD_SHARED_DOC_KEY = 'kinepro_shared_workspace';
-const DEFAULT_SHARED_WORKSPACE = 'principal';
+const CLOUD_APP_ID = 'kinepro_panel_pc_optimizado_20260430';
+const CLOUD_INSTALLATION_KEY = 'kinepro_pc_optimizado_installation_id';
+const CLOUD_SHARED_DOC_KEY = 'kinepro_pc_optimizado_shared_workspace';
+const DEFAULT_SHARED_WORKSPACE = 'principal_pc_optimizado_20260430';
 
 function getInstallationId() {
   try {
@@ -5683,13 +5684,13 @@ function applySerializableState(payload) {
 
 function persistLocalAppState() {
   try {
-    localStorage.setItem('kinepro_app_state', JSON.stringify(getSerializableState()));
+    localStorage.setItem('kinepro_pc_optimizado_app_state', JSON.stringify(getSerializableState()));
   } catch (err) {}
 }
 
 function restoreLocalAppState() {
   try {
-    const raw = localStorage.getItem('kinepro_app_state');
+    const raw = localStorage.getItem('kinepro_pc_optimizado_app_state');
     if (!raw) return;
     const saved = JSON.parse(raw);
     applySerializableState(saved);
@@ -5744,7 +5745,7 @@ function initFirebaseSync() {
     cloudDb = firebase.firestore();
 
     const workspaceId = getSharedWorkspaceId();
-    cloudDoc = cloudDb.collection('apps').doc('kinepro_main').collection('workspaces').doc(workspaceId);
+    cloudDoc = cloudDb.collection('apps').doc(CLOUD_APP_ID).collection('workspaces').doc(workspaceId);
     cloudReady = true;
 
     cloudDoc.onSnapshot((snap) => {
