@@ -1237,6 +1237,13 @@
 .info-board-sub { margin-top: 8px; font-size: 11px; line-height: 1.25; font-weight: 600; color: rgba(255,255,255,0.62); position: relative; z-index: 1; }
 @media (max-width: 400px) { .info-board-grid { grid-template-columns: 1fr; } .info-board-time { font-size: 44px; } }
 
+/* ===== ESTADO FIREBASE REALTIME ===== */
+.sync-pill{position:fixed;left:50%;top:8px;transform:translateX(-50%);z-index:220;background:rgba(9,9,9,.86);color:#fff;border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:6px 10px;font-size:10px;font-weight:800;letter-spacing:.3px;box-shadow:0 12px 28px rgba(0,0,0,.22);backdrop-filter:blur(14px)}
+.sync-pill.ok{background:rgba(0,110,72,.88)}
+.sync-pill.warn{background:rgba(166,93,0,.9)}
+.sync-pill.err{background:rgba(160,25,45,.92)}
+@media(min-width:980px){.sync-pill{left:calc(108px + (100vw - 108px)/2)}}
+
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -1299,6 +1306,7 @@
 
 </head>
 <body>
+<div id="sync-status" class="sync-pill warn">Firebase: conectando</div>
 
 <!-- SCREEN: INICIO -->
 <div class="screen active" id="screen-inicio">
@@ -5065,6 +5073,7 @@ function startSessionFromRoutine(routineId) {
   startSessionTimer(session);
   updateBadges();
   openExecutionDetail(sid);
+  markLocalUpdate();
   queueCloudSave();
 }
 
@@ -5147,6 +5156,7 @@ function toggleExercise(sid, idx) {
   session.exercises[idx].done = !session.exercises[idx].done;
   updateExecProgress(session);
   renderExecExercises(session);
+  markLocalUpdate();
   queueCloudSave();
 }
 
@@ -5163,6 +5173,7 @@ function toggleSessionPause() {
   if (!session) return;
   session.paused = !session.paused;
   updatePauseBtn(session);
+  markLocalUpdate();
   queueCloudSave();
 }
 
@@ -5194,6 +5205,7 @@ function finishSession() {
     });
   }
   state.todayCount++;
+  markLocalUpdate();
   state.activeSessions = state.activeSessions.filter(s => s.id !== state.currentSession);
   state.currentSession = null;
   updateBadges();
@@ -5265,6 +5277,7 @@ function saveSessionData() {
   };
   closeModal('modal-session-data');
   renderExecExercises(session);
+  markLocalUpdate();
   queueCloudSave();
 }
 
@@ -5696,27 +5709,43 @@ function restoreLocalAppState() {
   } catch (err) {}
 }
 
+function setSyncStatus(text, cls = 'warn') {
+  const el = document.getElementById('sync-status');
+  if (!el) return;
+  el.textContent = text;
+  el.className = 'sync-pill ' + cls;
+}
+
 function queueCloudSave(force = false) {
   if (cloudApplying) return;
-  if (!state.localUpdatedAt) markLocalUpdate();
+
+  const writeVersion = Date.now();
+  state.localUpdatedAt = writeVersion;
   persistLocalAppState();
-  if (!cloudReady || !cloudDoc || !cloudBootstrapDone) return;
+
+  if (!cloudReady || !cloudDoc || !cloudBootstrapDone) {
+    setSyncStatus('Firebase: pendiente', 'warn');
+    return;
+  }
+
   clearTimeout(cloudSaveTimer);
   cloudSaveTimer = setTimeout(async () => {
     try {
-      const updatedAt = force ? Date.now() : (state.localUpdatedAt || Date.now());
-      if (force) state.localUpdatedAt = updatedAt;
-      lastCloudWrite = updatedAt;
+      state.localUpdatedAt = writeVersion;
+      lastCloudWrite = writeVersion;
       await cloudDoc.set({
         state: getSerializableState(),
-        updatedAt,
+        updatedAt: writeVersion,
         workspaceId: getSharedWorkspaceId(),
-        lastEditorInstallationId: getInstallationId()
+        lastEditorInstallationId: getInstallationId(),
+        savedAt: firebase.firestore.FieldValue.serverTimestamp()
       }, { merge: true });
+      setSyncStatus('Firebase: sincronizado', 'ok');
     } catch (err) {
       console.error('Error al guardar en Firebase', err);
+      setSyncStatus('Firebase: error al guardar', 'err');
     }
-  }, force ? 0 : 350);
+  }, force ? 0 : 250);
 }
 
 function rerenderAll() {
@@ -5739,9 +5768,17 @@ function rerenderAll() {
 
 function initFirebaseSync() {
   try {
-    if (!window.firebase) return;
+    setSyncStatus('Firebase: conectando', 'warn');
+    if (!window.firebase) {
+      setSyncStatus('Firebase: SDK no cargó', 'err');
+      return;
+    }
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     cloudDb = firebase.firestore();
+
+    if (cloudDb.enablePersistence) {
+      cloudDb.enablePersistence({ synchronizeTabs: true }).catch(() => {});
+    }
 
     const workspaceId = getSharedWorkspaceId();
     cloudDoc = cloudDb.collection('apps').doc('kinepro_main').collection('workspaces').doc(workspaceId);
@@ -5752,37 +5789,47 @@ function initFirebaseSync() {
 
       if (!snap.exists || !data || !data.state) {
         cloudBootstrapDone = true;
+        setSyncStatus('Firebase: creando base', 'warn');
         queueCloudSave(true);
         return;
       }
 
-      const incomingVersion = data.state && typeof data.state.localUpdatedAt === 'number'
-        ? data.state.localUpdatedAt
-        : (data.updatedAt || 0);
-
-      const localVersion = state.localUpdatedAt || 0;
+      const remoteVersion = typeof data.updatedAt === 'number'
+        ? data.updatedAt
+        : (data.state && typeof data.state.localUpdatedAt === 'number' ? data.state.localUpdatedAt : 0);
 
       if (!cloudBootstrapDone) {
         cloudBootstrapDone = true;
-        if (incomingVersion > localVersion) {
-          applySerializableState(data.state);
-          return;
-        }
-        queueCloudSave(true);
+        lastCloudWrite = remoteVersion || lastCloudWrite;
+        applySerializableState(data.state);
+        setSyncStatus('Firebase: sincronizado', 'ok');
         return;
       }
 
-      if (data.updatedAt && data.updatedAt === lastCloudWrite) return;
-      if (incomingVersion && localVersion && incomingVersion < localVersion) return;
+      if (remoteVersion && remoteVersion === lastCloudWrite) {
+        setSyncStatus('Firebase: sincronizado', 'ok');
+        return;
+      }
 
+      if (remoteVersion && state.localUpdatedAt && remoteVersion < state.localUpdatedAt) {
+        return;
+      }
+
+      lastCloudWrite = remoteVersion || lastCloudWrite;
       applySerializableState(data.state);
+      setSyncStatus('Firebase: actualizado', 'ok');
     }, (err) => {
       console.error('Error de sincronización Firebase', err);
+      setSyncStatus('Firebase: error de conexión', 'err');
     });
   } catch (err) {
     console.error('No se pudo iniciar Firebase', err);
+    setSyncStatus('Firebase: no inició', 'err');
   }
 }
+window.addEventListener('online', () => { setSyncStatus('Firebase: reconectando', 'warn'); queueCloudSave(true); });
+window.addEventListener('offline', () => setSyncStatus('Firebase: sin conexión', 'err'));
+
 // ==================== INIT ====================
 function init() {
   restoreUIState();
