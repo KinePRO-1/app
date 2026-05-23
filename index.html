@@ -5039,6 +5039,7 @@ const state = loadState();
 let currentSession = loadSession();
 let exerciseDraft = [];
 let syncTimer;
+let athleteInputPersistTimer = null;
 let selectedPatientId = null;
 let editingRoutineId = null;
 let editingExerciseIndex = null;
@@ -8865,6 +8866,13 @@ async function seedEmptyCollectionsFromLocalState() {
 function listenToEntityCollections() {
   Object.values(ENTITY_COLLECTIONS).forEach(({ collection, key }) => {
     firebaseOnSnapshot(firebaseCollection(firebaseDb, collection), (snapshot) => {
+      const focusedAthleteInput = document.activeElement?.closest?.("[data-athlete-input]");
+      if (focusedAthleteInput && key === "activeSessions") {
+        const pending = snapshot.metadata?.hasPendingWrites;
+        pending ? markPendingChanges() : markCloudSynced();
+        return;
+      }
+
       applyingRemoteState = true;
       state[key] = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
       localStorage.setItem(STORAGE_KEY, JSON.stringify(ensurePresetProfiles(state)));
@@ -10214,20 +10222,31 @@ function editRoutine(routineId) {
   renderExerciseDraft();
 }
 
-function deleteRoutine(routineId) {
+async function deleteRoutine(routineId) {
   const routine = getRoutine(routineId);
   if (!routine) return;
   if (!window.confirm(`Eliminar la rutina "${routine.name}"? Esta accion no se puede deshacer.`)) return;
 
+  const removedActiveSessions = state.activeSessions.filter((session) => session.routineId === routineId);
+
   state.routines = state.routines.filter((item) => item.id !== routineId);
   state.activeSessions = state.activeSessions.filter((session) => session.routineId !== routineId);
-  deleteCloudEntity("routines", routineId);
+
   if (editingRoutineId === routineId) {
     editingRoutineId = null;
     exerciseDraft = [];
     $("#routine-form").reset();
   }
-  persist();
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  renderAll();
+
+  await Promise.all([
+    deleteCloudEntity("routines", routineId),
+    ...removedActiveSessions.map((session) => deleteCloudEntity("activeSessions", session.id))
+  ]);
+
+  await persist();
   renderAll();
 }
 
@@ -10587,12 +10606,21 @@ function toggleAthleteExercise(sessionId, exerciseId) {
 function updateAthleteExerciseData(sessionId, exerciseId, field, value) {
   const allowedFields = ["actualSets", "actualReps", "actualLoad", "actualSeconds", "athleteNotes"];
   if (!allowedFields.includes(field)) return;
+
   const session = state.activeSessions.find((item) => item.id === sessionId);
   const exercise = session?.exercises.find((item) => item.id === exerciseId);
   if (!exercise) return;
-  exercise[field] = field === "actualLoad" ? loadToInputValue(value) : String(value || "").trim();
+
+  exercise[field] = field === "actualLoad" ? loadToInputValue(value) : String(value ?? "");
   touchEntity(session);
-  persist();
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  markSyncing();
+
+  clearTimeout(athleteInputPersistTimer);
+  athleteInputPersistTimer = setTimeout(() => {
+    persist();
+  }, 700);
 }
 
 function toggleAthletePause(sessionId) {
@@ -10679,14 +10707,17 @@ function editHistoryRecord(historyId) {
   renderAll();
 }
 
-function deleteHistoryRecord(historyId) {
+async function deleteHistoryRecord(historyId) {
   const item = state.history.find((record) => record.id === historyId);
   if (!item) return;
   if (!window.confirm("Eliminar esta sesion del historial?")) return;
 
   state.history = state.history.filter((record) => record.id !== historyId);
-  deleteCloudEntity("history", historyId);
-  persist();
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  renderAll();
+
+  await deleteCloudEntity("history", historyId);
+  await persist();
   renderAll();
 }
 
@@ -10831,6 +10862,12 @@ function bindEvents() {
     const athleteToggleExerciseButton = event.target.closest("[data-athlete-toggle-exercise]");
     const athletePauseButton = event.target.closest("[data-athlete-pause-session]");
     const athleteFinishButton = event.target.closest("[data-athlete-finish-session]");
+
+    const destructiveOrMenuButton = event.target.closest("[data-delete-routine], [data-delete-history], [data-edit-routine], [data-edit-history], [data-duplicate-routine], [data-print-routine]");
+    if (destructiveOrMenuButton) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
 
     if (draftButton) {
       exerciseDraft.splice(Number(draftButton.dataset.removeDraft), 1);
