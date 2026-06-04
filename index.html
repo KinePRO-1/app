@@ -270,6 +270,23 @@ button {
   color: #8e958c;
 }
 
+.athlete-access-card .access-icon {
+  grid-column: 1;
+}
+
+.athlete-access-card > div:not(.access-icon) {
+  grid-column: 2;
+  min-width: 0;
+}
+
+#athlete-login-dni {
+  grid-column: 3;
+}
+
+.athlete-access-card .access-arrow {
+  grid-column: 4;
+}
+
 .access-arrow {
   width: 26px;
   height: 34px;
@@ -2877,11 +2894,11 @@ canvas {
     font-weight: 400;
   }
 
-  .tab:nth-child(1) .tab-icon::before { content: "⌂"; }
-  .tab:nth-child(2) .tab-icon::before { content: "▤"; }
-  .tab:nth-child(3) .tab-icon::before { content: "▷"; }
-  .tab:nth-child(4) .tab-icon::before { content: "♙"; }
-  .tab:nth-child(5) .tab-icon::before { content: "▥"; }
+  .tab:nth-child(1) .tab-icon::before { content: "\2302"; }
+  .tab:nth-child(2) .tab-icon::before { content: "\25A4"; }
+  .tab:nth-child(3) .tab-icon::before { content: "\25B7"; }
+  .tab:nth-child(4) .tab-icon::before { content: "\25CB"; }
+  .tab:nth-child(5) .tab-icon::before { content: "\2225"; }
 
   .tab.active {
     border-color: rgba(255, 255, 255, 0.1);
@@ -2915,7 +2932,7 @@ canvas {
   }
 
   .admin-user-card .status-dot::before {
-    content: "♙";
+    content: "\25CB";
     display: grid;
     place-items: center;
     width: 100%;
@@ -3088,7 +3105,7 @@ canvas {
   }
 
   .clock-panel::before {
-    content: "◷";
+    content: "\25B7";
     float: left;
     margin: 4px 12px 0 0;
     color: var(--accent);
@@ -3184,13 +3201,13 @@ canvas {
     border-radius: 999px;
     color: var(--accent);
     font-size: 24px;
-    content: "▣";
+    content: "\25A3";
   }
 
-  .metric:nth-child(1)::before { content: "♙"; }
-  .metric:nth-child(2)::before { content: "▤"; }
-  .metric:nth-child(3)::before { content: "⌁"; }
-  .metric:nth-child(4)::before { content: "▦"; }
+  .metric:nth-child(1)::before { content: "\25CB"; }
+  .metric:nth-child(2)::before { content: "\25A4"; }
+  .metric:nth-child(3)::before { content: "\2301"; }
+  .metric:nth-child(4)::before { content: "\25A6"; }
 
   .metric span,
   .metric small,
@@ -3405,7 +3422,7 @@ canvas {
   }
 
   .empty-state::before {
-    content: "▣";
+    content: "\25A3";
     display: grid;
     place-items: center;
     width: 74px;
@@ -3580,7 +3597,7 @@ canvas {
   }
 
   .athlete-summary::before {
-    content: "♙";
+    content: "\25CB";
     display: grid;
     place-items: center;
     width: 54px;
@@ -3777,7 +3794,7 @@ canvas {
   }
 
   .progress-pack summary::after {
-    content: "›";
+    content: "\203A";
     display: grid;
     place-items: center;
     width: 34px;
@@ -4529,14 +4546,14 @@ canvas {
               <strong>Deportista</strong>
             </div>
             <input id="athlete-login-dni" name="dni" inputmode="numeric" autocomplete="off" required placeholder="DNI">
-            <button class="access-arrow" type="submit" aria-label="Ingresar como deportista">›</button>
+            <button class="access-arrow" type="submit" aria-label="Ingresar como deportista">&rsaquo;</button>
             <span id="athlete-login-message" class="access-message"></span>
           </form>
         </div>
         <button id="admin-reveal" class="admin-secret-trigger" type="button" aria-label="Acceso administrador">K</button>
         <form id="admin-login-form" class="admin-secret-form" hidden>
           <label>Email administrador<input id="admin-email" name="email" type="email" autocomplete="username" value="magurnojuan@gmail.com" placeholder="magurnojuan@gmail.com"></label>
-          <label>Contraseña<input id="admin-password" name="password" type="password" autocomplete="current-password" value="Novi2800" placeholder="Contraseña"></label>
+          <label>Contrase&ntilde;a<input id="admin-password" name="password" type="password" autocomplete="current-password" placeholder="Contrase&ntilde;a"></label>
           <button id="admin-login" class="primary-action full" type="submit">Ingresar como Administrador</button>
           <span id="admin-login-message" class="access-message"></span>
         </form>
@@ -4557,7 +4574,7 @@ canvas {
         <div class="sync-card admin-user-card">
           <span class="status-dot" id="sync-dot" aria-hidden="true"></span>
           <div>
-            <span>Kinesiólogo</span>
+            <span>KinesiÃ³logo</span>
             <strong>Juan-Manuel</strong>
             <em>Administrador</em>
             <small id="sync-label">Sincronizado</small>
@@ -4571,7 +4588,7 @@ canvas {
           <div class="page-copy">
             <p class="eyebrow">Centro operativo diario</p>
             <h1 id="view-title">Bienvenido, Juan-Manuel</h1>
-            <p id="view-subtitle" class="view-subtitle">Tené el control total de tu consultorio.</p>
+            <p id="view-subtitle" class="view-subtitle">TenÃ© el control total de tu consultorio.</p>
           </div>
           <div class="topbar-runner" aria-hidden="true"></div>
           <button class="top-create" data-view-jump="patients" type="button">+ Nueva</button>
@@ -5012,7 +5029,6 @@ canvas {
 const STORAGE_KEY = "kinepro.clinic.v1";
 const SESSION_KEY = "kinepro.session.v1";
 const ADMIN_EMAIL = "magurnojuan@gmail.com";
-const ADMIN_PASSWORD = "Novi2800";
 const channel = "BroadcastChannel" in window ? new BroadcastChannel("kinepro-sync") : null;
 const firebaseConfig = {
   apiKey: "AIzaSyDBFPOHtc3LtwBcaifGc2TWaMzWReWmq_4",
@@ -5664,7 +5680,7 @@ const EXERCISE_LIBRARY = [
         "source":  "PLANILLA FRANQUICIA CES 757"
     },
     {
-        "name":  "2DO TIEMPO CON BARRA POR DETRÁS",
+        "name":  "2DO TIEMPO CON BARRA POR DETRÃS",
         "category":  "ACTIVADORES DLP",
         "source":  "PLANILLA FRANQUICIA CES 757"
     },
@@ -5694,7 +5710,7 @@ const EXERCISE_LIBRARY = [
         "source":  "PLANILLA FRANQUICIA CES 757"
     },
     {
-        "name":  "2 TIEMPO X DETRÁS (CON TIJERA)",
+        "name":  "2 TIEMPO X DETRÃS (CON TIJERA)",
         "category":  "ACTIVADORES DLP",
         "source":  "PLANILLA FRANQUICIA CES 757"
     },
@@ -6134,12 +6150,12 @@ const EXERCISE_LIBRARY = [
         "source":  "PLANILLA FRANQUICIA CES 757"
     },
     {
-        "name":  "ESTOCADAS HACIA ATRÁS CON MANC",
+        "name":  "ESTOCADAS HACIA ATRÃS CON MANC",
         "category":  "PP CADENA ANTERIOR",
         "source":  "PLANILLA FRANQUICIA CES 757"
     },
     {
-        "name":  "ESTOCADAS HACIA ATRÁS COPA",
+        "name":  "ESTOCADAS HACIA ATRÃS COPA",
         "category":  "PP CADENA ANTERIOR",
         "source":  "PLANILLA FRANQUICIA CES 757"
     },
@@ -6244,7 +6260,7 @@ const EXERCISE_LIBRARY = [
         "source":  "PLANILLA FRANQUICIA CES 757"
     },
     {
-        "name":  "SENTADILLAS ATRÁS",
+        "name":  "SENTADILLAS ATRÃS",
         "category":  "PP CADENA ANTERIOR",
         "source":  "PLANILLA FRANQUICIA CES 757"
     },
@@ -6284,7 +6300,7 @@ const EXERCISE_LIBRARY = [
         "source":  "PLANILLA FRANQUICIA CES 757"
     },
     {
-        "name":  "SENTADILLA CAJON X DETRÁS",
+        "name":  "SENTADILLA CAJON X DETRÃS",
         "category":  "PP CADENA ANTERIOR",
         "source":  "PLANILLA FRANQUICIA CES 757"
     },
@@ -6344,7 +6360,7 @@ const EXERCISE_LIBRARY = [
         "source":  "PLANILLA FRANQUICIA CES 757"
     },
     {
-        "name":  "SENTADILLA ATRÁS 3:1: 3",
+        "name":  "SENTADILLA ATRÃS 3:1: 3",
         "category":  "PP CADENA ANTERIOR",
         "source":  "PLANILLA FRANQUICIA CES 757"
     },
@@ -7674,12 +7690,12 @@ const EXERCISE_LIBRARY = [
         "source":  "PLANILLA FRANQUICIA CES 757"
     },
     {
-        "name":  "ABDOMINALES DE PP A 45 º",
+        "name":  "ABDOMINALES DE PP A 45 grados",
         "category":  "ZONA MEDIA CADENA ANTERIOR",
         "source":  "PLANILLA FRANQUICIA CES 757"
     },
     {
-        "name":  "ABDOMINALES A 200 º",
+        "name":  "ABDOMINALES A 200 grados",
         "category":  "ZONA MEDIA CADENA ANTERIOR",
         "source":  "PLANILLA FRANQUICIA CES 757"
     },
@@ -7689,7 +7705,7 @@ const EXERCISE_LIBRARY = [
         "source":  "PLANILLA FRANQUICIA CES 757"
     },
     {
-        "name":  "ABDOMINALES DE PP COLG.\"FLEX. A 90º PP\"",
+        "name":  "ABDOMINALES DE PP COLG.\"FLEX. A 90 grados PP\"",
         "category":  "ZONA MEDIA CADENA ANTERIOR",
         "source":  "PLANILLA FRANQUICIA CES 757"
     },
@@ -7719,7 +7735,7 @@ const EXERCISE_LIBRARY = [
         "source":  "PLANILLA FRANQUICIA CES 757"
     },
     {
-        "name":  "TWIST DE PP (90º O 180º)",
+        "name":  "TWIST DE PP (90 grados O 180 grados)",
         "category":  "ZONA MEDIA CADENA ANTERIOR",
         "source":  "PLANILLA FRANQUICIA CES 757"
     },
@@ -7899,7 +7915,7 @@ const EXERCISE_LIBRARY = [
         "source":  "PLANILLA FRANQUICIA CES 757"
     },
     {
-        "name":  "HEL DE PP ISOM 45º",
+        "name":  "HEL DE PP ISOM 45 grados",
         "category":  "ZONA MEDIA CADENA POSTERIOR",
         "source":  "PLANILLA FRANQUICIA CES 757"
     },
@@ -8074,7 +8090,7 @@ const EXERCISE_LIBRARY = [
         "source":  "PLANILLA FRANQUICIA CES 757"
     },
     {
-        "name":  "EXTENSIONES POR DETRÁS CON BARRA",
+        "name":  "EXTENSIONES POR DETRÃS CON BARRA",
         "category":  "CINTURA ESCAPULAR",
         "source":  "PLANILLA FRANQUICIA CES 757"
     },
@@ -8439,7 +8455,7 @@ const EXERCISE_LIBRARY = [
         "source":  "PLANILLA FRANQUICIA CES 757"
     },
     {
-        "name":  "ESC. CON SALT. Y COORD PARA MONTAÑA",
+        "name":  "ESC. CON SALT. Y COORD PARA MONTAÃ‘A",
         "category":  "PLIOMETRICOS",
         "source":  "PLANILLA FRANQUICIA CES 757"
     },
@@ -8460,7 +8476,9 @@ function uid(prefix) {
 
 function loadSession() {
   try {
-    return JSON.parse(sessionStorage.getItem(SESSION_KEY)) || { role: "guest" };
+    const session = JSON.parse(sessionStorage.getItem(SESSION_KEY)) || { role: "guest" };
+    if (!["admin", "athlete"].includes(session.role)) return { role: "guest" };
+    return session;
   } catch {
     return { role: "guest" };
   }
@@ -8478,29 +8496,6 @@ function clearSession() {
 
 function normalizeDni(value) {
   return String(value || "").replace(/\D/g, "");
-}
-
-function normalizePin(value) {
-  return String(value || "").replace(/\D/g, "").slice(0, 6);
-}
-
-function isValidPin(value) {
-  return /^\d{4,6}$/.test(normalizePin(value));
-}
-
-async function hashPin(pin) {
-  const clean = normalizePin(pin);
-  if (!window.crypto?.subtle) return clean;
-  const bytes = new TextEncoder().encode(clean);
-  const hash = await crypto.subtle.digest("SHA-256", bytes);
-  return [...new Uint8Array(hash)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
-}
-
-async function verifyPin(pin, stored) {
-  const clean = normalizePin(pin);
-  if (!stored) return false;
-  if (stored === clean) return true;
-  return await hashPin(clean) === stored;
 }
 
 function touchEntity(entity) {
@@ -8574,7 +8569,6 @@ function ensurePresetProfiles(data) {
     ...athlete,
     id: athlete.id || `athlete-${athlete.patientId || index}`,
     dni: normalizeDni(athlete.dni),
-    pinHashOrPin: athlete.pinHashOrPin || athlete.pin || "",
     active: athlete.active !== false,
     updatedAt: athlete.updatedAt || athlete.createdAt || new Date().toISOString()
   }));
@@ -9018,6 +9012,28 @@ function getAthletePatient() {
   return access ? getPatient(access.patientId) : null;
 }
 
+function validateCurrentSession() {
+  if (currentSession.role === "admin") {
+    if (!currentSession.authenticatedAt) {
+      clearSession();
+    }
+    return;
+  }
+
+  if (currentSession.role === "athlete") {
+    const access = getAthleteAccessByDni(currentSession.dni);
+    const patient = access ? getPatient(access.patientId) : null;
+    if (!access || !patient || access.patientId !== currentSession.patientId) {
+      clearSession();
+    }
+    return;
+  }
+
+  if (currentSession.role !== "guest") {
+    clearSession();
+  }
+}
+
 function getExerciseNumericValue(value, fallback = 0) {
   const normalized = String(value ?? "").replace(",", ".").replace(/[^\d.]/g, "");
   const number = Number.parseFloat(normalized);
@@ -9170,6 +9186,7 @@ function deleteCustomExercise(exerciseId) {
 }
 
 function renderAccessShell() {
+  validateCurrentSession();
   const isAdmin = currentSession.role === "admin";
   const isAthlete = currentSession.role === "athlete";
   document.body.classList.toggle("admin-mode", isAdmin);
@@ -9195,27 +9212,27 @@ async function adminLogin(event) {
   const email = String(form.get("email") || "").trim();
   const password = String(form.get("password") || "");
   const message = $("#admin-login-message");
-  const matchesLocalAdmin = email.toLowerCase() === ADMIN_EMAIL.toLowerCase() && password === ADMIN_PASSWORD;
   try {
     if (!email || !password) {
       message.textContent = "Ingrese email y contrasena de administrador.";
       return;
     }
-    if (firebaseSignInWithEmailAndPassword && firebaseAuth) {
-      await firebaseSignInWithEmailAndPassword(firebaseAuth, email, password);
-    } else if (!matchesLocalAdmin) {
+    if (email.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
       message.textContent = "Credenciales de administrador incorrectas.";
       return;
     }
-  } catch (error) {
-    console.error("Admin auth failed", error);
-    if (!matchesLocalAdmin) {
-      message.textContent = "No se pudo validar el administrador.";
+    if (!firebaseSignInWithEmailAndPassword || !firebaseAuth) {
+      message.textContent = "Espere unos segundos y vuelva a intentar. La validacion segura aun no esta lista.";
       return;
     }
+    await firebaseSignInWithEmailAndPassword(firebaseAuth, email, password);
+  } catch (error) {
+    console.error("Admin auth failed", error);
+    message.textContent = "No se pudo validar el administrador.";
+    return;
   }
   message.textContent = "";
-  saveSession({ role: "admin", email });
+  saveSession({ role: "admin", email, authenticatedAt: new Date().toISOString() });
   renderAccessShell();
   renderAll();
 }
@@ -9243,7 +9260,8 @@ function athleteLogin(event) {
   }
 
   message.textContent = "";
-  saveSession({ role: "athlete", dni });
+  event.currentTarget.reset();
+  saveSession({ role: "athlete", dni, patientId: patient.id, authenticatedAt: new Date().toISOString() });
   renderAccessShell();
   renderAll();
 }
@@ -9281,7 +9299,6 @@ function createAthleteAccess(patientId) {
     id: uid("athlete"),
     patientId: patient.id,
     dni,
-    pinHashOrPin: "",
     active: true,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
@@ -9316,7 +9333,7 @@ function renderAthleteAccessAdmin() {
         <header>
           <div>
             <h3>${escapeHtml(patient?.name || "Paciente eliminado")}</h3>
-            <div class="meta-line">DNI ${escapeHtml(access.dni)} &middot; ingreso sin PIN &middot; ${access.active === false ? "inactivo" : "activo"}</div>
+            <div class="meta-line">DNI ${escapeHtml(access.dni)} &middot; ingreso por DNI &middot; ${access.active === false ? "inactivo" : "activo"}</div>
           </div>
           <button class="danger-action" data-delete-athlete-access="${access.id}" type="button">Eliminar</button>
         </header>
@@ -9657,7 +9674,7 @@ function renderPatientProfile() {
   const accessStatus = $("#profile-access-status");
   if (accessStatus) {
     accessStatus.innerHTML = access
-      ? `<span class="chip stable">Activa</span><p>DNI ${escapeHtml(access.dni)} habilitado para ingreso sin PIN.</p>`
+      ? `<span class="chip stable">Activa</span><p>DNI ${escapeHtml(access.dni)} habilitado para ingreso deportista.</p>`
       : `<span class="chip controlled">Pendiente</span><p>Este paciente todavia no tiene acceso deportista.</p>`;
   }
 
@@ -9753,8 +9770,8 @@ function renderExerciseDraft() {
         </div>
       </div>
       <div class="draft-order" aria-label="Orden del ejercicio">
-        <button class="order-button" data-move-draft="${index}:up" type="button" ${index === 0 ? "disabled" : ""} aria-label="Subir ejercicio">↑</button>
-        <button class="order-button" data-move-draft="${index}:down" type="button" ${index === exerciseDraft.length - 1 ? "disabled" : ""} aria-label="Bajar ejercicio">↓</button>
+        <button class="order-button" data-move-draft="${index}:up" type="button" ${index === 0 ? "disabled" : ""} aria-label="Subir ejercicio">&uarr;</button>
+        <button class="order-button" data-move-draft="${index}:down" type="button" ${index === exerciseDraft.length - 1 ? "disabled" : ""} aria-label="Bajar ejercicio">&darr;</button>
       </div>
     </div>
   `).join("");
@@ -10156,6 +10173,31 @@ function editDraftExercise(index) {
   renderExerciseDraft();
 }
 
+function syncActiveSessionsForRoutine(nextRoutine) {
+  state.activeSessions
+    .filter((session) => session.routineId === nextRoutine.id)
+    .forEach((session) => {
+      const previousExercises = session.exercises || [];
+      session.routineName = nextRoutine.name;
+      session.exercises = nextRoutine.exercises.map((exercise) => {
+        const previous = previousExercises.find((item) => item.id === exercise.id)
+          || previousExercises.find((item) => item.name === exercise.name);
+        return {
+          ...exercise,
+          done: Boolean(previous?.done),
+          actualSets: previous?.actualSets || "",
+          actualReps: previous?.actualReps || "",
+          actualLoad: previous?.actualLoad || "",
+          actualSeconds: previous?.actualSeconds || "",
+          athleteNotes: previous?.athleteNotes || ""
+        };
+      });
+      const completed = session.exercises.filter((exercise) => exercise.done).length;
+      session.progress = Math.round((completed / Math.max(1, session.exercises.length)) * 100);
+      touchEntity(session);
+    });
+}
+
 function addRoutine(event) {
   event.preventDefault();
   if (editingExerciseIndex !== null || $("#exercise-name").value.trim()) {
@@ -10185,6 +10227,7 @@ function addRoutine(event) {
     if (index !== -1) {
       nextRoutine.createdAt = state.routines[index].createdAt;
       state.routines[index] = nextRoutine;
+      syncActiveSessionsForRoutine(nextRoutine);
     }
   } else {
     state.routines.unshift(nextRoutine);
@@ -10254,7 +10297,7 @@ function getActiveSessionForPatient(patientId) {
   return state.activeSessions.find((session) => session.patientId === patientId);
 }
 
-function resolveActiveSessionConflict(patientId) {
+async function resolveActiveSessionConflict(patientId) {
   const existing = getActiveSessionForPatient(patientId);
   if (!existing) return "start";
   const response = window.prompt(
@@ -10268,18 +10311,18 @@ function resolveActiveSessionConflict(patientId) {
     return "cancel";
   }
   if (action.startsWith("fin")) {
-    finishSession(existing.id, { abandoned: true });
+    await finishSession(existing.id, { abandoned: true });
     return "start";
   }
   return "cancel";
 }
 
-function startSession(event) {
+async function startSession(event) {
   event.preventDefault();
   const form = new FormData(event.currentTarget);
   const routine = getRoutine(form.get("routineId"));
   if (!routine) return;
-  if (resolveActiveSessionConflict(form.get("patientId")) === "cancel") return;
+  if (await resolveActiveSessionConflict(form.get("patientId")) === "cancel") return;
 
   state.activeSessions.unshift({
     id: uid("session"),
@@ -10299,10 +10342,10 @@ function startSession(event) {
   renderAll();
 }
 
-function startRoutineSession(routineId) {
+async function startRoutineSession(routineId) {
   const routine = getRoutine(routineId);
   if (!routine) return;
-  if (resolveActiveSessionConflict(routine.patientId) === "cancel") return;
+  if (await resolveActiveSessionConflict(routine.patientId) === "cancel") return;
 
   state.activeSessions.unshift({
     id: uid("session"),
@@ -10494,6 +10537,7 @@ async function finishSession(sessionId, options = {}) {
     : "Finalizar la sesion y guardar el registro en historial?";
   if (!options.skipConfirm && !window.confirm(message)) return;
 
+  clearTimeout(athleteInputPersistTimer);
   const record = buildSessionHistoryRecord(session);
   if (options.abandoned) {
     record.status = "abandoned";
@@ -10502,8 +10546,10 @@ async function finishSession(sessionId, options = {}) {
   state.history.unshift(record);
   state.activeSessions.splice(index, 1);
 
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  renderAll();
+  await deleteCloudEntity("activeSessions", session.id);
   await persist();
-  deleteCloudEntity("activeSessions", session.id);
   renderAll();
 }
 
