@@ -4533,6 +4533,70 @@ canvas {
   .entity-card header, .session-card header { gap: 8px; }
   .stats-row { margin-top: 10px; }
 }
+
+/* ── Responsive mejorado: celular / iPad / escritorio ── */
+
+/* iPad horizontal (1024px) */
+@media (min-width: 981px) and (max-width: 1180px) {
+  .app-shell { grid-template-columns: 90px minmax(0, 1fr); }
+  .tab { width: 78px; min-height: 70px; font-size: 10px; }
+  .workspace { padding: 22px 20px 28px; }
+  .topbar, .athlete-topbar { min-height: 220px; }
+  .topbar h1, .athlete-topbar h1 { font-size: clamp(3rem, 5vw, 5rem); }
+  .metric-grid, .clinical-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* iPad portrait (768-980px) — ya cubierto arriba, pero refinamos */
+@media (min-width: 721px) and (max-width: 980px) {
+  .workspace { padding: 20px 18px 110px; }
+  .split-layout, .module-grid { grid-template-columns: 1fr; }
+  #sessions .split-layout { grid-template-columns: 1fr; }
+  .metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .clinical-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .metric-insights { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .topbar { grid-template-columns: minmax(0,1fr) auto auto; }
+  .clock-panel { grid-column: 1 / -1; min-width: 0; text-align: left; }
+  #sessions .split-layout { grid-template-columns: 1fr; }
+  #routines .module-grid { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .exercise-builder .form-row { grid-template-columns: 1fr repeat(2, minmax(56px,0.35fr)) minmax(56px,0.35fr) minmax(80px, 0.6fr); }
+}
+
+/* Celular mediano (480-720px) */
+@media (min-width: 431px) and (max-width: 720px) {
+  .workspace, .athlete-portal { padding-bottom: calc(110px + env(safe-area-inset-bottom)); }
+  .metric-grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+  .clinical-metrics { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .metric-insights { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .profile-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .profile-actions { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .form-row { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .athlete-execution-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+
+/* Celular pequeño (max 430px) */
+@media (max-width: 430px) {
+  .workspace, .athlete-portal { padding-bottom: calc(100px + env(safe-area-inset-bottom)); }
+  .metric-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .metric { min-height: 90px; padding: 14px; }
+  .metric strong { font-size: 1.8rem; }
+  .clinical-metrics { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .metric-insights { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .panel { padding: 14px; }
+  .tabs { grid-template-columns: repeat(5, minmax(58px,1fr)); gap: 4px; }
+  .tab { min-height: 54px; font-size: 9px; padding: 3px; }
+  .topbar h1 { font-size: clamp(2.2rem, 16vw, 3.5rem); }
+  h2 { font-size: 0.95rem; }
+  .section-head { margin-bottom: 14px; }
+  .form-row { grid-template-columns: 1fr; }
+  .exercise-builder .form-row { grid-template-columns: 1fr repeat(2, minmax(56px,0.4fr)) minmax(56px,0.4fr) minmax(72px, 0.55fr); }
+  .profile-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .profile-actions { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .profile-actions button:last-child { grid-column: 1 / -1; }
+  .athlete-execution-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .access-panel { padding-inline: 10px; }
+  .athlete-session-head { grid-template-columns: 1fr; }
+}
 </style>
   </head>
   <body>
@@ -8796,11 +8860,12 @@ async function writeCloudState() {
     return;
   }
   try {
+    const now = new Date().toISOString();
     const writes = Object.values(ENTITY_COLLECTIONS).flatMap(({ collection, key }) => (
       (state[key] || []).map((item) => {
         const id = item.id || uid(collection);
         item.id = id;
-        item.updatedAt = new Date().toISOString();
+        if (!item.updatedAt) item.updatedAt = now;
         const ref = firebaseDoc(firebaseCollection(firebaseDb, collection), id);
         return firebaseSetDoc(ref, JSON.parse(JSON.stringify(item)), { merge: true });
       })
@@ -8832,10 +8897,15 @@ async function initCloudSync() {
     firebaseDoc = firestoreModule.doc;
     firebaseSignInWithEmailAndPassword = authModule.signInWithEmailAndPassword;
 
-    const snapshot = await firebaseGetDoc(cloudStateRef);
-    if (snapshot.exists() && snapshot.data().state) {
-      applyRemoteState(snapshot.data().state);
-      migrateSharedStateToCollections(snapshot.data().state);
+    // Load remote collections first — remote data wins over local
+    const remoteLoaded = await loadEntityCollectionsFromFirestore();
+    if (!remoteLoaded) {
+      // Legacy: check old shared-state document
+      const snapshot = await firebaseGetDoc(cloudStateRef);
+      if (snapshot.exists() && snapshot.data().state) {
+        applyRemoteState(snapshot.data().state);
+        migrateSharedStateToCollections(snapshot.data().state);
+      }
     }
 
     cloudEnabled = true;
@@ -8846,6 +8916,30 @@ async function initCloudSync() {
   } catch (error) {
     console.error("Firebase init failed", error);
     markCloudError();
+  }
+}
+
+async function loadEntityCollectionsFromFirestore() {
+  if (!firebaseGetDocs || !firebaseCollection || !firebaseDb) return false;
+  try {
+    const results = await Promise.all(Object.values(ENTITY_COLLECTIONS).map(async ({ collection, key }) => {
+      const snapshot = await firebaseGetDocs(firebaseCollection(firebaseDb, collection));
+      return { key, docs: snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })), empty: snapshot.empty };
+    }));
+    const anyData = results.some((item) => !item.empty);
+    if (anyData) {
+      applyingRemoteState = true;
+      results.forEach(({ key, docs }) => {
+        if (docs.length > 0) state[key] = docs;
+      });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(ensurePresetProfiles(state)));
+      renderAll();
+      applyingRemoteState = false;
+    }
+    return anyData;
+  } catch (error) {
+    console.error("Firebase initial load failed", error);
+    return false;
   }
 }
 
@@ -8863,18 +8957,24 @@ async function seedEmptyCollectionsFromLocalState() {
   if (!firebaseGetDocs || !firebaseCollection || !firebaseDb) return;
   const emptyChecks = await Promise.all(Object.values(ENTITY_COLLECTIONS).map(async ({ collection, key }) => {
     const snapshot = await firebaseGetDocs(firebaseCollection(firebaseDb, collection));
-    return { key, empty: snapshot.empty };
+    return { key, empty: snapshot.empty, remoteCount: snapshot.size };
   }));
-  if (emptyChecks.some((item) => item.empty && (state[item.key] || []).length)) {
+  // Only seed if ALL collections are empty (first run, no remote data at all)
+  const allEmpty = emptyChecks.every((item) => item.empty);
+  if (allEmpty && state.patients.length > 0) {
     await writeCloudState();
   }
 }
 
 function listenToEntityCollections() {
   Object.values(ENTITY_COLLECTIONS).forEach(({ collection, key }) => {
-    firebaseOnSnapshot(firebaseCollection(firebaseDb, collection), { includeMetadataChanges: true }, (snapshot) => {
+    firebaseOnSnapshot(firebaseCollection(firebaseDb, collection), { includeMetadataChanges: false }, (snapshot) => {
+      if (snapshot.metadata?.fromCache) return;
       applyingRemoteState = true;
-      state[key] = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      const remoteDocs = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      if (remoteDocs.length > 0 || key !== "patients") {
+        state[key] = remoteDocs;
+      }
       localStorage.setItem(STORAGE_KEY, JSON.stringify(ensurePresetProfiles(state)));
       const focusedAthleteInput = document.activeElement?.closest?.("[data-athlete-input]");
       const isLocalActiveSessionWrite = Boolean(focusedAthleteInput && key === "activeSessions" && snapshot.metadata?.hasPendingWrites);
@@ -8882,8 +8982,7 @@ function listenToEntityCollections() {
         renderAll();
       }
       applyingRemoteState = false;
-      const pending = snapshot.metadata?.hasPendingWrites || snapshot.metadata?.fromCache;
-      pending ? markPendingChanges() : markCloudSynced();
+      snapshot.metadata?.hasPendingWrites ? markPendingChanges() : markCloudSynced();
     }, (error) => {
       console.error(`Firebase realtime sync failed for ${collection}`, error);
       markCloudError();
@@ -9991,91 +10090,7 @@ function renderClinicalMetrics() {
   `;
 }
 
-function renderExerciseProgress() {
-  const patientId = $("#progress-patient")?.value || "";
-  const exerciseName = $("#progress-exercise")?.value || "";
-  const patientSelect = $("#progress-patient");
-  const exerciseSelect = $("#progress-exercise");
-  const table = $("#exercise-progress-table");
-  if (!patientSelect || !exerciseSelect || !table) return;
 
-  patientSelect.innerHTML = ["<option value=''>Todos los pacientes</option>", ...state.patients.map((patient) => `<option value="${patient.id}">${escapeHtml(patient.name)}</option>`)].join("");
-  patientSelect.value = state.patients.some((patient) => patient.id === patientId) ? patientId : "";
-
-  const history = getFilteredHistory().filter((item) => !patientSelect.value || item.patientId === patientSelect.value);
-  const names = [...new Set(history.flatMap((item) => (item.executionData || []).map((exercise) => exercise.name)).filter(Boolean))].sort((a, b) => a.localeCompare(b));
-  exerciseSelect.innerHTML = ["<option value=''>Todos los ejercicios</option>", ...names.map((name) => `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`)].join("");
-  exerciseSelect.value = names.includes(exerciseName) ? exerciseName : "";
-
-  const rows = history.flatMap((item) => (item.executionData || [])
-    .filter((exercise) => !exerciseSelect.value || exercise.name === exerciseSelect.value)
-    .map((exercise) => ({ item, exercise })));
-
-  if (!rows.length) {
-    table.innerHTML = "<div class='empty-state'>Todavia no hay progreso historico para ese filtro.</div>";
-    return;
-  }
-
-  const renderProgressRows = (items) => items.map(({ item, exercise }) => {
-    const patient = getPatient(item.patientId);
-    const volume = getExerciseNumericValue(exercise.series, 0) * getExerciseNumericValue(exercise.reps, 0) * getExerciseNumericValue(exercise.load, 1);
-    return `<tr><td>${formatDateTime(item.finishedAt).split(",")[0]}</td><td>${escapeHtml(patient?.name || item.patientName || "-")}</td><td>${escapeHtml(exercise.name)}</td><td>${escapeHtml(exercise.series || "-")}</td><td>${escapeHtml(exercise.reps || "-")}</td><td>${escapeHtml(exercise.load || "-")}</td><td>${Math.round(volume)}</td></tr>`;
-  }).join("");
-
-  const renderProgressTable = (items) => `
-    <table class="progress-table">
-      <thead><tr><th>Fecha</th><th>Paciente</th><th>Ejercicio</th><th>Series</th><th>Reps</th><th>Kg</th><th>Volumen</th></tr></thead>
-      <tbody>${renderProgressRows(items)}</tbody>
-    </table>
-  `;
-
-  if (exerciseSelect.value) {
-    table.innerHTML = renderProgressTable(rows.slice(0, 80));
-    return;
-  }
-
-  const groups = rows.reduce((acc, row) => {
-    const dateSource = row.item.finishedAt || row.item.createdAt || new Date().toISOString();
-    const dateKey = new Date(dateSource).toISOString().slice(0, 10);
-    const key = `${row.item.patientId || row.item.patientName || "paciente"}:${dateKey}`;
-    if (!acc[key]) {
-      const patient = getPatient(row.item.patientId);
-      acc[key] = {
-        date: formatDateTime(dateSource).split(",")[0],
-        patientName: patient?.name || row.item.patientName || "-",
-        sessions: new Set(),
-        rows: [],
-        volume: 0
-      };
-    }
-    const exercise = row.exercise;
-    acc[key].sessions.add(row.item.id);
-    acc[key].rows.push(row);
-    acc[key].volume += getExerciseNumericValue(exercise.series, 0) * getExerciseNumericValue(exercise.reps, 0) * getExerciseNumericValue(exercise.load, 1);
-    return acc;
-  }, {});
-
-  table.innerHTML = `
-    <div class="progress-pack-list">
-      ${Object.values(groups).map((group) => `
-        <details class="progress-pack">
-          <summary>
-            <span>
-              <strong>${escapeHtml(group.date)}</strong>
-              <small>${escapeHtml(group.patientName)}</small>
-            </span>
-            <span class="stat-pill">${group.rows.length} ejercicios</span>
-            <span class="stat-pill">${group.sessions.size} sesiones</span>
-            <span class="stat-pill">Volumen ${Math.round(group.volume)}</span>
-          </summary>
-          <div class="progress-pack-table">
-            ${renderProgressTable(group.rows)}
-          </div>
-        </details>
-      `).join("")}
-    </div>
-  `;
-}
 
 function renderAll() {
   renderMetrics();
@@ -11089,4 +11104,3 @@ setInterval(tickTimers, 1000);
     </script>
   </body>
 </html>
-
