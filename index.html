@@ -4533,6 +4533,290 @@ canvas {
   .entity-card header, .session-card header { gap: 8px; }
   .stats-row { margin-top: 10px; }
 }
+
+
+/* Portal deportista: correccion de renderizado y controles tactiles */
+@media screen {
+  body.athlete-mode .athlete-portal,
+  body.athlete-mode .athlete-content,
+  body.athlete-mode .athlete-content > *,
+  body.athlete-mode #athlete-profile-card,
+  body.athlete-mode #athlete-history-panel,
+  body.athlete-mode #athlete-routines-list {
+    min-width: 0;
+  }
+
+  body.athlete-mode .athlete-session-panel,
+  body.athlete-mode .athlete-routines-panel,
+  body.athlete-mode #athlete-profile-card > .athlete-fold,
+  body.athlete-mode #athlete-history-panel > .athlete-fold,
+  body.athlete-mode .athlete-routine-card,
+  body.athlete-mode .athlete-exercise-compact {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.028)) !important;
+    border-color: rgba(255, 255, 255, 0.11) !important;
+    color: #ffffff !important;
+    box-shadow: 0 22px 60px rgba(0, 0, 0, 0.34) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  body.athlete-mode .athlete-session-panel,
+  body.athlete-mode .athlete-routines-panel {
+    display: block;
+    width: 100%;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+
+  body.athlete-mode .athlete-session-panel[hidden] {
+    display: none !important;
+  }
+
+  body.athlete-mode .athlete-routines-panel .section-head,
+  body.athlete-mode .athlete-session-head,
+  body.athlete-mode .athlete-routine-card-head,
+  body.athlete-mode .athlete-exercise-summary {
+    position: relative;
+    z-index: 1;
+  }
+
+  body.athlete-mode .athlete-routines-panel .section-head {
+    display: flex !important;
+    margin-bottom: 16px;
+  }
+
+  body.athlete-mode .athlete-routines-panel h2,
+  body.athlete-mode .athlete-routine-card h3,
+  body.athlete-mode .athlete-exercise-compact h3,
+  body.athlete-mode .athlete-session-panel h2 {
+    color: #ffffff !important;
+  }
+
+  body.athlete-mode #athlete-routines-list,
+  body.athlete-mode .compact-athlete-execution-list {
+    display: grid;
+    gap: 12px;
+    min-height: 0 !important;
+  }
+
+  body.athlete-mode .athlete-routine-card {
+    display: grid;
+    gap: 14px;
+    width: 100%;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 18px;
+    overflow: hidden !important;
+    animation: none !important;
+  }
+
+  body.athlete-mode .athlete-routine-card::after {
+    pointer-events: none;
+  }
+
+  body.athlete-mode .athlete-routine-card-head {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: center;
+  }
+
+  body.athlete-mode .athlete-routine-copy {
+    min-width: 0;
+  }
+
+  body.athlete-mode .athlete-routine-copy h3 {
+    margin: 0 0 5px;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+  }
+
+  body.athlete-mode .athlete-card-toggle {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border: 1px solid rgba(184, 255, 26, 0.36);
+    border-radius: 999px;
+    background: rgba(184, 255, 26, 0.08);
+    color: var(--accent);
+    touch-action: manipulation;
+  }
+
+  body.athlete-mode .athlete-card-toggle span {
+    font-size: 28px;
+    font-weight: 900;
+    line-height: 1;
+    transition: transform 160ms ease;
+  }
+
+  body.athlete-mode .athlete-card-toggle.is-open span {
+    transform: rotate(90deg);
+  }
+
+  body.athlete-mode .athlete-routine-actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  body.athlete-mode .athlete-routine-actions .primary-action {
+    min-width: 150px;
+  }
+
+  body.athlete-mode .athlete-routine-exercises[hidden],
+  body.athlete-mode .athlete-exercise-detail[hidden] {
+    display: none !important;
+  }
+
+  body.athlete-mode .athlete-routine-exercises:not([hidden]),
+  body.athlete-mode .athlete-exercise-detail:not([hidden]) {
+    display: grid !important;
+    max-height: none !important;
+    opacity: 1 !important;
+    overflow: visible !important;
+  }
+
+  body.athlete-mode .athlete-exercise-compact {
+    display: grid;
+    width: 100%;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: hidden !important;
+    animation: none !important;
+  }
+
+  body.athlete-mode .athlete-exercise-summary {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px 12px;
+    align-items: center;
+    min-height: 0;
+    padding: 16px;
+    cursor: default;
+  }
+
+  body.athlete-mode .athlete-exercise-summary::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  body.athlete-mode .athlete-exercise-actions {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  body.athlete-mode .athlete-exercise-actions button,
+  body.athlete-mode .athlete-session-actions button,
+  body.athlete-mode .athlete-routine-actions button,
+  body.athlete-mode .athlete-card-toggle {
+    position: relative;
+    z-index: 5;
+    pointer-events: auto !important;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body.athlete-mode .athlete-exercise-detail {
+    gap: 12px;
+    padding: 0 16px 16px;
+  }
+
+  body.athlete-mode .athlete-session-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin: 14px 0 18px;
+  }
+
+  body.athlete-mode .athlete-session-actions button {
+    width: 100%;
+    min-height: 46px;
+  }
+
+  body.athlete-mode .athlete-fold > :not(summary) {
+    display: none !important;
+    max-height: none !important;
+    opacity: 1 !important;
+    overflow: visible !important;
+  }
+
+  body.athlete-mode .athlete-fold[open] > :not(summary) {
+    display: block !important;
+  }
+
+  body.athlete-mode .athlete-fold[open] > .athlete-kpi-grid,
+  body.athlete-mode .athlete-fold[open] > .entity-list,
+  body.athlete-mode .athlete-fold[open] > .exercise-list {
+    display: grid !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  body.athlete-mode .athlete-portal {
+    padding: 18px 14px 40px !important;
+  }
+
+  body.athlete-mode .athlete-topbar {
+    grid-template-columns: 1fr;
+    min-height: 0 !important;
+    margin-bottom: 18px;
+  }
+
+  body.athlete-mode .athlete-topbar > div:first-child {
+    grid-column: auto;
+    align-self: auto;
+    padding: 8px 0 0;
+  }
+
+  body.athlete-mode #athlete-logout {
+    width: 100%;
+  }
+
+  body.athlete-mode .athlete-routines-panel,
+  body.athlete-mode .athlete-session-panel,
+  body.athlete-mode #athlete-profile-card > .athlete-fold,
+  body.athlete-mode #athlete-history-panel > .athlete-fold {
+    padding: 18px !important;
+    border-radius: 22px !important;
+  }
+
+  body.athlete-mode .athlete-routine-card-head {
+    grid-template-columns: 42px minmax(0, 1fr);
+  }
+
+  body.athlete-mode .athlete-routine-card-head > .chip {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  body.athlete-mode .athlete-routine-actions,
+  body.athlete-mode .athlete-routine-actions .primary-action {
+    width: 100%;
+  }
+
+  body.athlete-mode .athlete-exercise-summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  body.athlete-mode .athlete-exercise-summary > .chip {
+    justify-self: start;
+  }
+
+  body.athlete-mode .athlete-exercise-actions,
+  body.athlete-mode .athlete-session-actions,
+  body.athlete-mode .athlete-execution-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 </style>
   </head>
   <body>
@@ -8476,6 +8760,11 @@ const EXERCISE_LIBRARY = [
 
 const $ = (selector) => document.querySelector(selector);
 
+if (!window.CSS) window.CSS = {};
+if (!window.CSS.escape) {
+  window.CSS.escape = (value) => String(value).replace(/[^a-zA-Z0-9_-]/g, (character) => `\\${character}`);
+}
+
 function uid(prefix) {
   return `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
@@ -8554,15 +8843,29 @@ function ensurePresetProfiles(data) {
     active: athlete.active !== false,
     updatedAt: athlete.updatedAt || athlete.createdAt || new Date().toISOString()
   }));
-  data.activeSessions = data.activeSessions.map((session) => ({
-    ...session,
-    source: session.source || "admin",
-    status: session.status || "active",
-    paused: Boolean(session.paused),
-    pauseStartedAt: session.pauseStartedAt || "",
-    pausedMs: Number(session.pausedMs || 0),
-    updatedAt: session.updatedAt || session.startedAt || new Date().toISOString()
-  }));
+  data.activeSessions = data.activeSessions.map((session, sessionIndex) => {
+    const sessionId = session.id || `session-${session.startedAt || sessionIndex}`;
+    return {
+      ...session,
+      id: sessionId,
+      source: session.source || "admin",
+      status: session.status || "active",
+      paused: Boolean(session.paused),
+      pauseStartedAt: session.pauseStartedAt || "",
+      pausedMs: Number(session.pausedMs || 0),
+      updatedAt: session.updatedAt || session.startedAt || new Date().toISOString(),
+      exercises: (session.exercises || []).map((exercise, exerciseIndex) => ({
+        ...exercise,
+        id: exercise.id || `${sessionId}-exercise-${exerciseIndex}`,
+        done: Boolean(exercise.done),
+        actualSets: exercise.actualSets ?? "",
+        actualReps: exercise.actualReps ?? "",
+        actualLoad: exercise.actualLoad ?? "",
+        actualSeconds: exercise.actualSeconds ?? "",
+        athleteNotes: exercise.athleteNotes ?? ""
+      }))
+    };
+  });
   data.history = data.history.map((item, index) => ({
     ...item,
     id: item.id || `history-${item.finishedAt || item.startedAt || index}`,
@@ -8572,13 +8875,21 @@ function ensurePresetProfiles(data) {
     createdAt: item.createdAt || item.finishedAt || new Date().toISOString(),
     executionData: item.executionData || []
   }));
-  data.routines = data.routines.map((routine) => ({
-    ...routine,
-    obs: routine.obs ?? routine.goal ?? "",
-    type: routine.type || (routine.template ? "template" : "assigned"),
-    date: routine.date || routine.createdAt || new Date().toISOString(),
-    updatedAt: routine.updatedAt || routine.createdAt || new Date().toISOString()
-  }));
+  data.routines = data.routines.map((routine, routineIndex) => {
+    const routineId = routine.id || `routine-${routine.patientId || "patient"}-${routineIndex}`;
+    return {
+      ...routine,
+      id: routineId,
+      obs: routine.obs ?? routine.goal ?? "",
+      type: routine.type || (routine.template ? "template" : "assigned"),
+      date: routine.date || routine.createdAt || new Date().toISOString(),
+      updatedAt: routine.updatedAt || routine.createdAt || new Date().toISOString(),
+      exercises: (routine.exercises || []).map((exercise, exerciseIndex) => ({
+        ...exercise,
+        id: exercise.id || `${routineId}-exercise-${exerciseIndex}`
+      }))
+    };
+  });
   data.exerciseLibrary = data.exerciseLibrary.map((exercise, index) => ({
     ...exercise,
     id: exercise.id || `custom-exercise-${index}`,
@@ -9413,20 +9724,24 @@ function renderAthleteAccessAdmin() {
 
 function renderReadOnlyRoutine(routine, patient) {
   const createdAt = routine.createdAt ? formatDateTime(routine.createdAt).split(",")[0] : "Sin fecha";
+  const bodyId = `athlete-routine-body-${routine.id}`;
   return `
-    <details class="entity-card athlete-fold athlete-routine-card athlete-card collapsible-card">
-      <summary class="athlete-summary">
-        <div>
+    <article class="entity-card athlete-routine-card athlete-card">
+      <div class="athlete-routine-card-head">
+        <button class="athlete-card-toggle" data-athlete-toggle-routine="${routine.id}" type="button" aria-expanded="false" aria-controls="${bodyId}" aria-label="Mostrar ejercicios de ${escapeHtml(getRoutineDisplayName(routine, patient))}">
+          <span aria-hidden="true">›</span>
+        </button>
+        <div class="athlete-routine-copy">
           <h3>${escapeHtml(getRoutineDisplayName(routine, patient))}</h3>
           <div class="meta-line">${escapeHtml(createdAt)} &middot; ${routine.exercises.length} ejercicios &middot; ${routine.active === false ? "inactiva" : "activa"}</div>
         </div>
-        <div class="athlete-summary-actions">
-          <button class="primary-action athlete-primary-action" data-athlete-start-routine="${routine.id}" type="button">Iniciar rutina</button>
-          <span class="chip stable">${routine.active === false ? "pausada" : "asignada"}</span>
-        </div>
-      </summary>
+        <span class="chip stable">${routine.active === false ? "pausada" : "asignada"}</span>
+      </div>
       ${routine.goal ? `<p class="athlete-goal">${escapeHtml(routine.goal)}</p>` : ""}
-      <div class="exercise-list">
+      <div class="athlete-routine-actions">
+        <button class="primary-action athlete-primary-action" data-athlete-start-routine="${routine.id}" type="button">Iniciar rutina</button>
+      </div>
+      <div id="${bodyId}" class="exercise-list athlete-routine-exercises" data-athlete-routine-body="${routine.id}" hidden>
         ${routine.exercises.map((exercise) => `
           <div class="exercise-row">
             <span>
@@ -9436,7 +9751,7 @@ function renderReadOnlyRoutine(routine, patient) {
           </div>
         `).join("")}
       </div>
-    </details>
+    </article>
   `;
 }
 
@@ -9530,8 +9845,8 @@ function renderAthleteActiveSession(session) {
     <div class="athlete-session-head">
       <div>
         <p class="eyebrow">Sesion en curso</p>
-        <h2>${escapeHtml(routine ? getRoutineDisplayName(routine) : "Rutina")}</h2>
-        <div class="meta-line">${completed}/${session.exercises.length} ejercicios &middot; progreso ${progress}%</div>
+        <h2>${escapeHtml(routine ? getRoutineDisplayName(routine) : session.routineName || "Rutina")}</h2>
+        <div class="meta-line">${completed}/${session.exercises.length} ejercicios &middot; progreso ${progress}%${session.paused ? " &middot; sesion pausada" : ""}</div>
       </div>
       <strong class="timer" data-athlete-timer="${session.id}">${formatDuration(elapsedSeconds(session))}</strong>
     </div>
@@ -9541,29 +9856,35 @@ function renderAthleteActiveSession(session) {
       <button class="danger-action" data-athlete-finish-session="${session.id}" type="button">Finalizar rutina</button>
     </div>
     <div class="exercise-list athlete-execution-list compact-athlete-execution-list">
-      ${session.exercises.map((exercise, index) => `
-        <details class="athlete-exercise-compact ${exercise.done ? "done" : ""}" ${!exercise.done && index === completed ? "open" : ""}>
-          <summary class="athlete-exercise-summary">
-            <div class="athlete-exercise-main">
-              <h3>${escapeHtml(exercise.name)}</h3>
-              <div class="meta-line">Plan: ${escapeHtml(formatExerciseDosageSimple(exercise))}</div>
+      ${session.exercises.map((exercise, index) => {
+        const detailId = `athlete-exercise-detail-${session.id}-${exercise.id}`;
+        return `
+          <article class="athlete-exercise-compact ${exercise.done ? "done" : ""}">
+            <div class="athlete-exercise-summary">
+              <div class="athlete-exercise-main">
+                <h3>${escapeHtml(exercise.name)}</h3>
+                <div class="meta-line">Plan: ${escapeHtml(formatExerciseDosageSimple(exercise))}</div>
+              </div>
+              <span class="chip ${exercise.done ? "stable" : "controlled"}">${exercise.done ? "completo" : "pendiente"}</span>
+              <div class="athlete-exercise-actions">
+                <button class="secondary-action athlete-detail-toggle" data-athlete-toggle-detail="${session.id}:${exercise.id}" type="button" aria-expanded="${!exercise.done && index === completed ? "true" : "false"}" aria-controls="${detailId}">${!exercise.done && index === completed ? "Ocultar detalle" : "Ver detalle"}</button>
+                <button class="${exercise.done ? "secondary-action" : "primary-action athlete-primary-action"}" data-athlete-toggle-exercise="${session.id}:${exercise.id}" type="button">
+                  ${exercise.done ? "Desmarcar" : "Marcar realizado"}
+                </button>
+              </div>
             </div>
-            <span class="chip ${exercise.done ? "stable" : "controlled"}">${exercise.done ? "completo" : "pendiente"}</span>
-            <button class="${exercise.done ? "secondary-action" : "primary-action athlete-primary-action"}" data-athlete-toggle-exercise="${session.id}:${exercise.id}" type="button">
-              ${exercise.done ? "Realizado" : "Marcar"}
-            </button>
-          </summary>
-          <div class="athlete-exercise-detail">
-            <div class="athlete-execution-grid">
-              <label>Series<input data-athlete-input="${session.id}:${exercise.id}:actualSets" inputmode="numeric" value="${escapeHtml(exercise.actualSets || "")}" placeholder="${escapeHtml(exercise.sets || "")}"></label>
-              <label>Reps<input data-athlete-input="${session.id}:${exercise.id}:actualReps" inputmode="numeric" value="${escapeHtml(exercise.actualReps || "")}" placeholder="${escapeHtml(exercise.reps || "")}"></label>
-              <label>Kg<input data-athlete-input="${session.id}:${exercise.id}:actualLoad" inputmode="decimal" value="${escapeHtml(loadToInputValue(exercise.actualLoad || ""))}" placeholder=""></label>
-              <label>Seg<input data-athlete-input="${session.id}:${exercise.id}:actualSeconds" inputmode="numeric" value="${escapeHtml(exercise.actualSeconds || "")}" placeholder="${escapeHtml(exercise.seconds || "")}"></label>
+            <div id="${detailId}" class="athlete-exercise-detail" data-athlete-detail-body="${session.id}:${exercise.id}" ${!exercise.done && index === completed ? "" : "hidden"}>
+              <div class="athlete-execution-grid">
+                <label>Series<input data-athlete-input="${session.id}:${exercise.id}:actualSets" inputmode="numeric" value="${escapeHtml(exercise.actualSets || "")}" placeholder="${escapeHtml(exercise.sets || "")}"></label>
+                <label>Reps<input data-athlete-input="${session.id}:${exercise.id}:actualReps" inputmode="numeric" value="${escapeHtml(exercise.actualReps || "")}" placeholder="${escapeHtml(exercise.reps || "")}"></label>
+                <label>Kg<input data-athlete-input="${session.id}:${exercise.id}:actualLoad" inputmode="decimal" value="${escapeHtml(loadToInputValue(exercise.actualLoad || ""))}" placeholder=""></label>
+                <label>Seg<input data-athlete-input="${session.id}:${exercise.id}:actualSeconds" inputmode="numeric" value="${escapeHtml(exercise.actualSeconds || "")}" placeholder="${escapeHtml(exercise.seconds || "")}"></label>
+              </div>
+              <label class="athlete-notes-input">Observaciones<textarea data-athlete-input="${session.id}:${exercise.id}:athleteNotes" rows="2" placeholder="Notas de esta ejecucion">${escapeHtml(exercise.athleteNotes || "")}</textarea></label>
             </div>
-            <label class="athlete-notes-input">Observaciones<textarea data-athlete-input="${session.id}:${exercise.id}:athleteNotes" rows="2" placeholder="Notas de esta ejecucion">${escapeHtml(exercise.athleteNotes || "")}</textarea></label>
-          </div>
-        </details>
-      `).join("")}
+          </article>
+        `;
+      }).join("")}
     </div>
   `;
 }
@@ -10690,8 +11011,9 @@ function startAthleteRoutine(routineId) {
     pausedMs: 0,
     progress: 0,
     updatedAt: new Date().toISOString(),
-    exercises: routine.exercises.map((exercise) => ({
+    exercises: routine.exercises.map((exercise, exerciseIndex) => ({
       ...exercise,
+      id: exercise.id || `${routine.id}-exercise-${exerciseIndex}`,
       done: false,
       actualSets: "",
       actualReps: "",
@@ -10756,11 +11078,11 @@ function toggleAthletePause(sessionId) {
   renderAll();
 }
 
-function finishAthleteSession(sessionId) {
+async function finishAthleteSession(sessionId) {
   const session = state.activeSessions.find((item) => item.id === sessionId);
   if (!session) return;
   if (!window.confirm("Finalizar la rutina y guardar tu sesion?")) return;
-  finishSession(sessionId, { skipConfirm: true });
+  await finishSession(sessionId, { skipConfirm: true });
 }
 
 function parseDurationInput(value, fallback) {
@@ -10973,6 +11295,8 @@ function bindEvents() {
     const startFirstRoutineButton = event.target.closest("[data-start-first-routine]");
     const scrollActiveSessionButton = event.target.closest("[data-scroll-active-session]");
     const athleteStartButton = event.target.closest("[data-athlete-start-routine]");
+    const athleteToggleRoutineButton = event.target.closest("[data-athlete-toggle-routine]");
+    const athleteToggleDetailButton = event.target.closest("[data-athlete-toggle-detail]");
     const athleteToggleExerciseButton = event.target.closest("[data-athlete-toggle-exercise]");
     const athletePauseButton = event.target.closest("[data-athlete-pause-session]");
     const athleteFinishButton = event.target.closest("[data-athlete-finish-session]");
@@ -11007,17 +11331,46 @@ function bindEvents() {
     }
     if (athleteStartButton) {
       event.preventDefault();
+      event.stopPropagation();
       startAthleteRoutine(athleteStartButton.dataset.athleteStartRoutine);
     }
+    if (athleteToggleRoutineButton) {
+      event.preventDefault();
+      event.stopPropagation();
+      const routineId = athleteToggleRoutineButton.dataset.athleteToggleRoutine;
+      const body = document.querySelector(`[data-athlete-routine-body="${CSS.escape(routineId)}"]`);
+      if (body) {
+        body.hidden = !body.hidden;
+        athleteToggleRoutineButton.setAttribute("aria-expanded", String(!body.hidden));
+        athleteToggleRoutineButton.classList.toggle("is-open", !body.hidden);
+      }
+    }
+    if (athleteToggleDetailButton) {
+      event.preventDefault();
+      event.stopPropagation();
+      const detailKey = athleteToggleDetailButton.dataset.athleteToggleDetail;
+      const body = document.querySelector(`[data-athlete-detail-body="${CSS.escape(detailKey)}"]`);
+      if (body) {
+        body.hidden = !body.hidden;
+        athleteToggleDetailButton.setAttribute("aria-expanded", String(!body.hidden));
+        athleteToggleDetailButton.textContent = body.hidden ? "Ver detalle" : "Ocultar detalle";
+      }
+    }
     if (athleteToggleExerciseButton) {
+      event.preventDefault();
+      event.stopPropagation();
       const [sessionId, exerciseId] = athleteToggleExerciseButton.dataset.athleteToggleExercise.split(":");
       toggleAthleteExercise(sessionId, exerciseId);
     }
     if (athletePauseButton) {
+      event.preventDefault();
+      event.stopPropagation();
       toggleAthletePause(athletePauseButton.dataset.athletePauseSession);
     }
     if (athleteFinishButton) {
-      finishAthleteSession(athleteFinishButton.dataset.athleteFinishSession);
+      event.preventDefault();
+      event.stopPropagation();
+      void finishAthleteSession(athleteFinishButton.dataset.athleteFinishSession);
     }
     if (startRoutineButton) {
       startRoutineSession(startRoutineButton.dataset.startRoutine);
