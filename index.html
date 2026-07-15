@@ -10990,6 +10990,22 @@ function getTrainingLoadRange(exercise, objective) {
   };
 }
 
+/**
+ * Dosificación estándar de la sesión según el objetivo seleccionado por el deportista.
+ * Se aplica a todos los ejercicios de la sesión activa, al igual que el rango de carga.
+ */
+function getTrainingDosage(objective) {
+  if (objective === "strength") return { sets: 3, reps: "6" };
+  if (objective === "power") return { sets: 3, reps: "10–8" };
+  return null;
+}
+
+function getExerciseRepsForVolume(reps) {
+  const values = String(reps ?? "").match(/\d+(?:[.,]\d+)?/g)?.map((value) => Number(value.replace(",", "."))) || [];
+  if (!values.length) return 0;
+  return values.reduce((sum, value) => sum + value, 0) / values.length;
+}
+
 function getTrainingObjectiveLabel(objective) {
   return objective === "strength" ? "Fuerza" : objective === "power" ? "Potencia" : "Sin definir";
 }
@@ -11014,10 +11030,10 @@ function renderReadOnlyRoutine(routine, patient) {
         <p>Elegí el objetivo de esta sesión</p>
         <div class="training-objective-options">
           <button class="training-objective-card" data-select-routine-objective="${routine.id}:strength" type="button" aria-pressed="false">
-            <strong>Fuerza</strong><span>80–95% de la capacidad máxima</span>
+            <strong>Fuerza</strong><span>3 series de 6 reps · 80–95% de la capacidad máxima</span>
           </button>
           <button class="training-objective-card" data-select-routine-objective="${routine.id}:power" type="button" aria-pressed="false">
-            <strong>Potencia</strong><span>30–40% de la capacidad máxima</span>
+            <strong>Potencia</strong><span>3 series de 10–8 reps · 30–40% de la capacidad máxima</span>
           </button>
         </div>
       </div>
@@ -11165,6 +11181,9 @@ function renderAthleteActiveSession(session) {
       ${session.exercises.map((exercise, index) => {
         const detailId = `athlete-exercise-detail-${session.id}-${exercise.id}`;
         const loadRange = getTrainingLoadRange(exercise, session.trainingObjective);
+        const trainingDosage = getTrainingDosage(session.trainingObjective);
+        const sets = trainingDosage?.sets ?? exercise.sets;
+        const reps = trainingDosage?.reps ?? exercise.reps;
         const restValue = exercise.rest || exercise.seconds || "-";
         const restText = restValue === "-" ? "Sin definir" : `${escapeHtml(String(restValue))}${String(restValue).toLowerCase().includes("min") || String(restValue).toLowerCase().includes("seg") ? "" : " seg"}`;
         return `
@@ -11183,8 +11202,8 @@ function renderAthleteActiveSession(session) {
             </div>
 
             <div class="athlete-dosage-grid">
-              <div class="athlete-dose-item"><span>Series</span><strong>${escapeHtml(String(exercise.sets || "-"))}</strong></div>
-              <div class="athlete-dose-item"><span>Repeticiones</span><strong>${escapeHtml(String(exercise.reps || "-"))}</strong></div>
+              <div class="athlete-dose-item"><span>Series</span><strong>${escapeHtml(String(sets || "-"))}</strong></div>
+              <div class="athlete-dose-item"><span>Repeticiones</span><strong>${escapeHtml(String(reps || "-"))}</strong></div>
               <div class="athlete-dose-item"><span>Descanso</span><strong>${restText}</strong></div>
               ${loadRange ? `<div class="athlete-dose-item athlete-dose-load"><span>Carga recomendada</span><strong>${escapeHtml(loadRange.text)}</strong></div>` : ""}
             </div>
@@ -11196,8 +11215,8 @@ function renderAthleteActiveSession(session) {
 
             <div id="${detailId}" class="athlete-exercise-detail athlete-exercise-detail-redesigned" data-athlete-detail-body="${session.id}:${exercise.id}" hidden>
               <div class="athlete-execution-grid">
-                <label>Series realizadas<input data-athlete-input="${session.id}:${exercise.id}:actualSets" inputmode="numeric" value="${escapeHtml(exercise.actualSets || "")}" placeholder="${escapeHtml(exercise.sets || "")}"></label>
-                <label>Repeticiones realizadas<input data-athlete-input="${session.id}:${exercise.id}:actualReps" inputmode="numeric" value="${escapeHtml(exercise.actualReps || "")}" placeholder="${escapeHtml(exercise.reps || "")}"></label>
+                <label>Series realizadas<input data-athlete-input="${session.id}:${exercise.id}:actualSets" inputmode="numeric" value="${escapeHtml(exercise.actualSets || "")}" placeholder="${escapeHtml(String(sets || ""))}"></label>
+                <label>Repeticiones realizadas<input data-athlete-input="${session.id}:${exercise.id}:actualReps" inputmode="numeric" value="${escapeHtml(exercise.actualReps || "")}" placeholder="${escapeHtml(String(reps || ""))}"></label>
                 <label>Carga utilizada (kg)<input data-athlete-input="${session.id}:${exercise.id}:actualLoad" inputmode="decimal" value="${escapeHtml(loadToInputValue(exercise.actualLoad || ""))}" placeholder=""></label>
                 <label>Tiempo (seg)<input data-athlete-input="${session.id}:${exercise.id}:actualSeconds" inputmode="numeric" value="${escapeHtml(exercise.actualSeconds || "")}" placeholder="${escapeHtml(exercise.seconds || "")}"></label>
               </div>
@@ -12288,7 +12307,7 @@ function buildSessionHistoryRecord(session) {
   const completed = session.exercises.filter((exercise) => exercise.done).length;
   const volume = session.exercises.reduce((sum, exercise) => {
     const sets = getExerciseNumericValue(exercise.actualSets, Number(exercise.sets || 0));
-    const reps = getExerciseNumericValue(exercise.actualReps, Number(exercise.reps || 1));
+    const reps = getExerciseNumericValue(exercise.actualReps, getExerciseRepsForVolume(exercise.reps));
     const load = getExerciseNumericValue(exercise.actualLoad || exercise.load, 1);
     return sum + sets * reps * load;
   }, 0);
@@ -12364,6 +12383,7 @@ function startAthleteRoutine(routineId, trainingObjective) {
     trainingObjective,
     exercises: routine.exercises.map((exercise, exerciseIndex) => ({
       ...exercise,
+      ...getTrainingDosage(trainingObjective),
       sourceExerciseId: exercise.id || "",
       id: `${sessionId}-exercise-${exerciseIndex}`,
       done: false,
@@ -12385,6 +12405,11 @@ function updateAthleteSessionObjective(sessionId, trainingObjective) {
   const session = getAthleteOwnedSession(sessionId);
   if (!session) return;
   session.trainingObjective = trainingObjective;
+  const dosage = getTrainingDosage(trainingObjective);
+  session.exercises.forEach((exercise) => {
+    exercise.sets = dosage.sets;
+    exercise.reps = dosage.reps;
+  });
   touchEntity(session);
   persist();
   renderAll();
@@ -12923,4 +12948,3 @@ setInterval(tickTimers, 1000);
     </script>
   </body>
 </html>
-
