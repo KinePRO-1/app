@@ -6524,6 +6524,330 @@ body.athlete-mode .training-objective-card span {
   body.admin-mode .metric-grid > *,
   body.admin-mode .section-head > * { min-width: 0; }
 }
+
+/* Sistema final de iconos SVG y composición sin colisiones. */
+body.admin-mode .tab-icon {
+  display: block;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+  color: currentColor;
+  background-color: currentColor;
+  -webkit-mask: var(--kp-nav-icon) center / contain no-repeat;
+  mask: var(--kp-nav-icon) center / contain no-repeat;
+}
+body.admin-mode .tab-icon::before { display: none; content: none; }
+body.admin-mode .tab:nth-child(1) .tab-icon { --kp-nav-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m3 10 9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V10Zm6 11v-7h6v7' fill='none' stroke='%23000' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+body.admin-mode .tab:nth-child(2) .tab-icon { --kp-nav-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='4' y='3' width='16' height='18' rx='1' fill='none' stroke='%23000' stroke-width='2'/%3E%3Cpath d='M8 8h8M8 12h8M8 16h8' fill='none' stroke='%23000' stroke-width='2'/%3E%3C/svg%3E"); }
+body.admin-mode .tab:nth-child(3) .tab-icon { --kp-nav-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m5 3 15 9L5 21V3Z' fill='none' stroke='%23000' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+body.admin-mode .tab:nth-child(4) .tab-icon { --kp-nav-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='8' r='4' fill='none' stroke='%23000' stroke-width='2'/%3E%3Cpath d='M4 21c.7-4 3.3-6 8-6s7.3 2 8 6' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E"); }
+body.admin-mode .tab:nth-child(5) .tab-icon { --kp-nav-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8 4v16M16 4v16' fill='none' stroke='%23000' stroke-width='2.5'/%3E%3C/svg%3E"); }
+body.admin-mode .tab { color: rgba(255,255,255,.82); }
+body.admin-mode .tab.active { color: var(--accent); }
+body.admin-mode .tab.active > span:last-child { color: #fff; }
+
+body.admin-mode .metric-grid { align-items: stretch; }
+body.admin-mode .metric {
+  display: grid;
+  grid-template-rows: minmax(18px, auto) minmax(48px, 1fr) auto;
+  align-content: stretch;
+  min-height: 192px;
+  padding: 25px 24px 22px 88px !important;
+  overflow: hidden;
+}
+body.admin-mode .metric::before {
+  left: 24px;
+  top: 24px;
+  display: block;
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  content: "" !important;
+}
+body.admin-mode .metric:nth-child(1)::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Ccircle cx='22' cy='22' r='20' fill='none' stroke='%23b8ff1a'/%3E%3Ccircle cx='22' cy='16' r='5' fill='none' stroke='%23b8ff1a' stroke-width='1.8'/%3E%3Cpath d='M12 32c1.5-5 4.8-7.5 10-7.5S30.5 27 32 32' fill='none' stroke='%23b8ff1a' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E") !important; }
+body.admin-mode .metric:nth-child(2)::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Ccircle cx='22' cy='22' r='20' fill='none' stroke='%23b8ff1a'/%3E%3Crect x='15' y='13' width='14' height='18' rx='1' fill='none' stroke='%23b8ff1a' stroke-width='1.8'/%3E%3Cpath d='M18 18h8M18 22h8M18 26h8' stroke='%23b8ff1a' stroke-width='1.8'/%3E%3C/svg%3E") !important; }
+body.admin-mode .metric:nth-child(3)::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Ccircle cx='22' cy='22' r='20' fill='none' stroke='%23b8ff1a'/%3E%3Cpath d='m18 18 5 4-3 1 5 4' fill='none' stroke='%23b8ff1a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important; }
+body.admin-mode .metric:nth-child(4)::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Ccircle cx='22' cy='22' r='20' fill='none' stroke='%23b8ff1a'/%3E%3Crect x='15' y='14' width='14' height='16' rx='1' fill='none' stroke='%23b8ff1a' stroke-width='1.8'/%3E%3Cpath d='M15 19h14M19 12v4M25 12v4M19 23h2M23 23h2M19 27h2M23 27h2' stroke='%23b8ff1a' stroke-width='1.6'/%3E%3C/svg%3E") !important; }
+body.admin-mode .metric span,
+body.admin-mode .metric strong,
+body.admin-mode .metric small { min-width: 0; margin: 0 !important; overflow-wrap: anywhere; }
+body.admin-mode .metric span { align-self: start; line-height: 1.2; font-size: .72rem; }
+body.admin-mode .metric strong { align-self: center; font-size: clamp(2.35rem, 3.6vw, 3.4rem); line-height: .92; }
+body.admin-mode .metric small { align-self: end; line-height: 1.25; }
+
+body.athlete-mode .athlete-card-toggle {
+  border: 0 !important;
+  background: #141914 !important;
+}
+body.athlete-mode .athlete-card-toggle::before {
+  inset: 0;
+  border: 0;
+  border-radius: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Ccircle cx='22' cy='22' r='20' fill='%23e67e22'/%3E%3Cpath d='M8 22h28M22 8c5 4 7 9 7 14s-2 10-7 14M22 8c-5 4-7 9-7 14s2 10 7 14M11 12c5 4 17 4 22 0M11 32c5-4 17-4 22 0' fill='none' stroke='%231d1b19' stroke-width='1.6'/%3E%3C/svg%3E") center / contain no-repeat;
+  content: "";
+}
+body.athlete-mode .athlete-card-toggle::after { display: none; }
+body.athlete-mode .training-objective-card::before {
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='none' stroke='%23b8ff1a'/%3E%3Cpath d='m18 7-7 10h5l-2 8 7-10h-5l2-8Z' fill='%23b8ff1a'/%3E%3C/svg%3E") center / contain no-repeat;
+  content: "";
+}
+body.athlete-mode .athlete-routines-panel .section-head h2::before {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='7' y='5' width='18' height='22' rx='2' fill='none' stroke='%23b8ff1a' stroke-width='1.8'/%3E%3Cpath d='M11 11h10M11 16h10M11 21h10' stroke='%23b8ff1a' stroke-width='1.8'/%3E%3C/svg%3E") center / contain no-repeat;
+  color: transparent;
+  content: "";
+}
+body.athlete-mode .athlete-history-fold h2::before {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M6 25V7M6 25h21M11 20l5-5 4 3 6-8' fill='none' stroke='%23b8ff1a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  color: transparent;
+  content: "";
+}
+
+@media screen and (max-width: 760px) {
+  body.admin-mode .metric { min-height: 166px; padding: 72px 16px 18px !important; }
+  body.admin-mode .metric::before { left: 16px; top: 16px; width: 38px; height: 38px; }
+  body.admin-mode .metric strong { font-size: clamp(2rem, 11vw, 3rem); }
+}
+
+/* Portal deportista: composición premium centrada en la rutina. */
+body.athlete-mode,
+body.athlete-mode .athlete-portal {
+  background: #090909 !important;
+}
+body.athlete-mode .athlete-portal::before,
+body.athlete-mode .athlete-topbar::after,
+body.athlete-mode .athlete-topbar::before {
+  display: none !important;
+  content: none !important;
+}
+body.athlete-mode .athlete-portal {
+  width: min(100%, 980px) !important;
+  min-height: 100dvh;
+  padding: clamp(22px, 4vw, 52px) clamp(16px, 4vw, 40px) 56px !important;
+  background:
+    radial-gradient(circle at 76% 12%, rgba(183,255,31,.11), transparent 20rem),
+    radial-gradient(circle at 42% 50%, rgba(183,255,31,.045), transparent 24rem),
+    #090909 !important;
+}
+body.athlete-mode .athlete-topbar {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 52px !important;
+  grid-template-areas: "intro notify" "logout logout" !important;
+  gap: 22px 16px !important;
+  min-height: 0 !important;
+  margin: 0 0 30px !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  background: transparent !important;
+}
+body.athlete-mode .athlete-topbar > div:first-child { grid-area: intro; max-width: none; padding: 0 !important; }
+body.athlete-mode .athlete-topbar .eyebrow {
+  display: inline-flex;
+  width: fit-content;
+  margin: 0 0 24px !important;
+  padding: 9px 14px;
+  border: 1px solid rgba(183,255,31,.22);
+  border-radius: 999px;
+  background: rgba(183,255,31,.07);
+  color: rgba(255,255,255,.72) !important;
+  font-size: .72rem !important;
+  font-weight: 900;
+  letter-spacing: .01em !important;
+  text-transform: uppercase !important;
+}
+body.athlete-mode .athlete-topbar h1 {
+  display: grid;
+  gap: 4px;
+  margin: 0 !important;
+  color: #f8f8f8 !important;
+  font-size: clamp(3rem, 7vw, 5.35rem) !important;
+  font-weight: 900 !important;
+  line-height: .93 !important;
+  letter-spacing: -.065em !important;
+  text-shadow: none !important;
+}
+body.athlete-mode .athlete-topbar h1::before { display: none !important; content: none !important; }
+body.athlete-mode .athlete-greeting { color: #b7ff1f; font-size: .52em; letter-spacing: -.045em; }
+body.athlete-mode .athlete-topbar .view-subtitle {
+  margin: 17px 0 0 !important;
+  color: rgba(255,255,255,.64) !important;
+  font-size: clamp(1rem, 2vw, 1.28rem) !important;
+  font-weight: 600;
+}
+body.athlete-mode .athlete-notification {
+  position: relative;
+  grid-area: notify;
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 50%;
+  background: rgba(255,255,255,.025);
+}
+body.athlete-mode .athlete-notification::before {
+  position: absolute;
+  inset: 14px;
+  background: #b7ff1f;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 22h4' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 22h4' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  content: "";
+}
+body.athlete-mode .athlete-notification::after {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #b7ff1f;
+  box-shadow: 0 0 18px rgba(183,255,31,.9);
+  content: "";
+}
+body.athlete-mode #athlete-logout {
+  grid-area: logout;
+  width: 100%;
+  min-height: 56px;
+  border: 1px solid rgba(255,255,255,.14) !important;
+  border-radius: 18px !important;
+  background: rgba(255,255,255,.025) !important;
+  color: #f7f7f7 !important;
+  font-size: .92rem;
+  font-weight: 800;
+  box-shadow: none !important;
+}
+body.athlete-mode #athlete-logout::before { content: "↪"; color: #b7ff1f; font-size: 1.35rem; vertical-align: -1px; }
+
+body.athlete-mode .athlete-content {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-areas: none !important;
+  gap: 24px !important;
+}
+body.athlete-mode .athlete-content > *,
+body.athlete-mode .athlete-routines-panel,
+body.athlete-mode #athlete-profile-card,
+body.athlete-mode #athlete-history-panel,
+body.athlete-mode #athlete-session-panel { grid-area: auto !important; order: initial; }
+body.athlete-mode #athlete-profile-card { order: 1; }
+body.athlete-mode .athlete-routines-panel { order: 2; }
+body.athlete-mode #athlete-session-panel { order: 3; }
+body.athlete-mode #athlete-history-panel { order: 4; }
+body.athlete-mode .athlete-routines-panel,
+body.athlete-mode #athlete-profile-card > .athlete-fold,
+body.athlete-mode #athlete-history-panel > .athlete-fold,
+body.athlete-mode .athlete-session-panel {
+  border: 1px solid rgba(255,255,255,.12) !important;
+  border-radius: 26px !important;
+  background: linear-gradient(145deg, rgba(33,35,34,.75), rgba(17,18,18,.92)) !important;
+  box-shadow: 0 22px 54px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.035) !important;
+  backdrop-filter: blur(12px);
+}
+
+body.athlete-mode #athlete-profile-card > .athlete-fold { padding: 0 !important; }
+body.athlete-mode .athlete-profile-fold .athlete-summary {
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) auto !important;
+  min-height: 132px;
+  padding: 22px 24px !important;
+  cursor: pointer;
+}
+body.athlete-mode .athlete-profile-fold .athlete-summary > div { display:block; min-width:0; }
+body.athlete-mode .athlete-profile-fold .athlete-summary h2 { display:flex; align-items:center; gap:16px; margin: 0 !important; font-size: 1.2rem !important; }
+body.athlete-mode .athlete-profile-avatar { width: 70px; height: 70px; flex:0 0 70px; border: 2px solid #b7ff1f; color:#fff; font-size:1.35rem; box-shadow: 0 0 26px rgba(183,255,31,.14); }
+body.athlete-mode .athlete-profile-fold .athlete-summary .meta-line { margin: 6px 0 0 86px; font-size: .85rem; }
+body.athlete-mode .athlete-profile-routine-count { margin:4px 0 0 86px; color:rgba(255,255,255,.62); font-size:.86rem; font-weight:700; }
+body.athlete-mode .athlete-profile-routine-count::before { display:inline-block; width:10px; height:10px; margin-right:8px; border-radius:50%; background:#b7ff1f; content:""; }
+body.athlete-mode .athlete-profile-open { align-self:center; padding:10px 15px; border:1px solid rgba(183,255,31,.45); border-radius:999px; color:#b7ff1f; font-size:.8rem; font-weight:900; }
+body.athlete-mode .athlete-profile-fold .athlete-summary::after { display:none !important; }
+
+body.athlete-mode .athlete-routines-panel { padding: clamp(20px,3vw,32px) !important; }
+body.athlete-mode .athlete-routines-panel .section-head { display:flex !important; align-items:center; margin:0 0 18px !important; }
+body.athlete-mode .athlete-routines-panel .section-head .eyebrow { display:none; }
+body.athlete-mode .athlete-routines-panel .section-head h2 { margin:0; font-size:clamp(1.5rem,3vw,2rem) !important; }
+body.athlete-mode .athlete-routines-panel .section-head h2::before { display:inline-block; width:30px; height:30px; margin-right:11px; vertical-align:-5px; }
+body.athlete-mode .athlete-routines-panel .section-head h2::after { content:"ACTIVA"; }
+body.athlete-mode #athlete-routines-list { display:grid; gap:16px; }
+body.athlete-mode .athlete-routine-card {
+  display:grid !important;
+  gap:22px !important;
+  padding:clamp(20px,3vw,32px) !important;
+  border:1px solid rgba(255,255,255,.11) !important;
+  border-radius:24px !important;
+  background: radial-gradient(circle at 6% 5%, rgba(183,255,31,.10), transparent 13rem), rgba(6,7,7,.54) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035) !important;
+}
+body.athlete-mode .athlete-routine-card-head { grid-template-columns: 72px minmax(0,1fr) !important; gap:16px !important; }
+body.athlete-mode .athlete-card-toggle { width:72px; height:72px; }
+body.athlete-mode .athlete-routine-copy h3 { margin:4px 0 12px !important; font-size:clamp(1.16rem,2.5vw,1.55rem) !important; }
+body.athlete-mode .athlete-routine-meta { display:flex; flex-wrap:wrap; gap:8px 14px; color:rgba(255,255,255,.53); font-size:.82rem; font-weight:700; }
+body.athlete-mode .athlete-routine-meta span { display:inline-flex; align-items:center; gap:6px; }
+body.athlete-mode .routine-date::before { content:"▣"; color:rgba(255,255,255,.7); }
+body.athlete-mode .routine-exercises::before { content:"⌘"; color:rgba(255,255,255,.7); }
+body.athlete-mode .routine-state::before { content:"ϟ"; color:#b7ff1f; font-size:1.1rem; }
+body.athlete-mode .athlete-routine-card > .chip { grid-column:auto; justify-self:start; margin-top:-4px; padding:7px 12px; font-size:.66rem; }
+body.athlete-mode .athlete-goal { display:none; }
+body.athlete-mode .training-objective-picker { padding:20px !important; border-radius:20px !important; background:rgba(255,255,255,.025) !important; }
+body.athlete-mode .training-objective-picker > p { margin:0 0 16px !important; color:rgba(255,255,255,.75) !important; font-size:1rem !important; font-weight:800; text-transform:none; }
+body.athlete-mode .training-objective-options { grid-template-columns:1fr !important; gap:12px; }
+body.athlete-mode .training-objective-card { min-height:104px; padding:18px 58px 18px 70px !important; border-radius:18px !important; transition:border-color .2s ease, background .2s ease, transform .2s ease; }
+body.athlete-mode .training-objective-card:hover { transform:translateY(-1px); border-color:rgba(183,255,31,.42) !important; }
+body.athlete-mode .training-objective-card::before { left:20px; width:36px; height:36px; }
+body.athlete-mode .training-objective-card::after { right:22px; color:#b7ff1f; }
+body.athlete-mode .training-objective-card strong { font-size:1.08rem; }
+body.athlete-mode .training-objective-card span { margin-top:4px; font-size:.84rem; line-height:1.45; }
+body.athlete-mode .training-objective-card.active { background:rgba(183,255,31,.075) !important; border-color:#b7ff1f !important; box-shadow:0 0 0 1px rgba(183,255,31,.32), 0 0 34px rgba(183,255,31,.08) !important; }
+body.athlete-mode .athlete-routine-actions { margin-top:0 !important; }
+body.athlete-mode .athlete-routine-actions .primary-action { min-height:62px; border-radius:18px; font-size:1rem; font-weight:900; box-shadow:0 16px 36px rgba(183,255,31,.22); }
+body.athlete-mode .athlete-routine-actions .primary-action:disabled { opacity:.56; background:linear-gradient(135deg,#b7ff1f,#9bdd17) !important; color:#071000 !important; }
+body.athlete-mode .athlete-routine-exercises { margin-top:0; }
+
+body.athlete-mode #athlete-history-panel > .athlete-fold { padding:0 !important; }
+body.athlete-mode .athlete-history-fold .athlete-summary { display:grid !important; grid-template-columns:114px minmax(0,1fr) auto !important; align-items:center; gap:18px; min-height:150px; padding:20px 24px !important; }
+body.athlete-mode .athlete-progress-ring { position:relative; display:grid; place-content:center; width:104px; aspect-ratio:1; border-radius:50%; background:conic-gradient(#b7ff1f var(--progress), rgba(255,255,255,.08) 0); box-shadow:0 0 26px rgba(183,255,31,.12); }
+body.athlete-mode .athlete-progress-ring::before { position:absolute; width:84px; height:84px; border-radius:50%; background:#141514; content:""; }
+body.athlete-mode .athlete-progress-ring > * { position:relative; z-index:1; text-align:center; }
+body.athlete-mode .athlete-progress-ring strong { color:#fff; font-size:1.55rem; }
+body.athlete-mode .athlete-progress-ring span { color:rgba(255,255,255,.55); font-size:.68rem; font-weight:800; }
+body.athlete-mode .athlete-progress-summary h2 { margin:0 0 8px !important; color:#fff; font-size:1.25rem !important; }
+body.athlete-mode .athlete-progress-summary h2::before,
+body.athlete-mode .athlete-progress-summary h2::after { display:none !important; content:none !important; }
+body.athlete-mode .athlete-progress-summary > strong { color:#fff; font-size:.92rem; }
+body.athlete-mode .athlete-progress-summary .meta-line { margin-top:6px; font-size:.78rem; line-height:1.55; }
+body.athlete-mode .athlete-progress-time { align-self:start; padding:7px 11px; border:1px solid rgba(183,255,31,.22); border-radius:999px; color:#b7ff1f; font-size:.72rem; font-weight:900; }
+body.athlete-mode .athlete-history-fold .athlete-summary::after { display:none !important; }
+
+@media screen and (max-width: 620px) {
+  body.athlete-mode .athlete-portal { padding:22px 14px 38px !important; }
+  body.athlete-mode .athlete-topbar { margin-bottom:22px !important; }
+  body.athlete-mode .athlete-topbar .eyebrow { margin-bottom:18px !important; }
+  body.athlete-mode .athlete-topbar h1 { font-size:clamp(2.8rem,14vw,4.05rem) !important; }
+  body.athlete-mode .athlete-profile-fold .athlete-summary { min-height:118px; padding:18px !important; }
+  body.athlete-mode .athlete-profile-avatar { width:58px; height:58px; flex-basis:58px; font-size:1.12rem; }
+  body.athlete-mode .athlete-profile-fold .athlete-summary .meta-line,
+  body.athlete-mode .athlete-profile-routine-count { margin-left:70px; }
+  body.athlete-mode .athlete-profile-open { padding:8px 11px; font-size:.72rem; }
+  body.athlete-mode .athlete-routines-panel { padding:15px !important; border-radius:22px !important; }
+  body.athlete-mode .athlete-routine-card { gap:17px !important; padding:18px !important; border-radius:20px !important; }
+  body.athlete-mode .athlete-routine-card-head { grid-template-columns:58px minmax(0,1fr) !important; gap:12px !important; }
+  body.athlete-mode .athlete-card-toggle { width:58px; height:58px; }
+  body.athlete-mode .athlete-routine-card > .chip { grid-column:auto; }
+  body.athlete-mode .training-objective-picker { padding:14px !important; }
+  body.athlete-mode .training-objective-card { min-height:96px; padding:16px 46px 16px 60px !important; }
+  body.athlete-mode .training-objective-card::before { left:14px; width:32px; height:32px; }
+  body.athlete-mode .athlete-history-fold .athlete-summary { grid-template-columns:84px minmax(0,1fr) !important; gap:13px; min-height:132px; padding:16px !important; }
+  body.athlete-mode .athlete-progress-ring { width:80px; }
+  body.athlete-mode .athlete-progress-ring::before { width:64px; height:64px; }
+  body.athlete-mode .athlete-progress-ring strong { font-size:1.2rem; }
+  body.athlete-mode .athlete-progress-time { grid-column:2; justify-self:start; }
+}
 </style>
   </head>
   <body>
@@ -6862,11 +7186,11 @@ body.athlete-mode .training-objective-card span {
       <header class="athlete-topbar">
         <div>
           <p class="eyebrow">Portal deportista</p>
-          <h1 id="athlete-name">Deportista</h1>
-          <p id="athlete-subtitle" class="view-subtitle">Este es tu espacio de entrenamiento.</p>
+          <h1><span class="athlete-greeting">Hola,</span><span id="athlete-name">Deportista</span></h1>
+          <p id="athlete-subtitle" class="view-subtitle">Listo para entrenar hoy.</p>
         </div>
-        <div class="topbar-runner" aria-hidden="true"></div>
-        <button id="athlete-logout" class="secondary-action" type="button">Salir</button>
+        <button class="athlete-notification" type="button" aria-label="Notificaciones" tabindex="-1"></button>
+        <button id="athlete-logout" class="secondary-action" type="button">Cerrar sesión</button>
       </header>
 
       <div id="athlete-active-banner" class="athlete-active-banner active-session-banner athlete-card" hidden></div>
@@ -6878,7 +7202,7 @@ body.athlete-mode .training-objective-card span {
           <div class="section-head">
             <div>
               <p class="eyebrow">Tratamiento</p>
-              <h2>Rutinas asignadas</h2>
+              <h2>Tu rutina actual</h2>
             </div>
           </div>
           <div id="athlete-routines-list" class="entity-list"></div>
@@ -7039,7 +7363,7 @@ let applyingRemoteState = false;
 let cloudEnabled = false;
 
 const views = {
-  dashboard: "Bienvenido, Juan Manuel",
+  dashboard: "Bienvenido, Juan-Manuel",
   patients: "Pacientes",
   routines: "Rutinas",
   sessions: "Ejecucion",
@@ -11566,7 +11890,11 @@ function renderReadOnlyRoutine(routine, patient) {
         </button>
         <div class="athlete-routine-copy">
           <h3>${escapeHtml(getRoutineDisplayName(routine, patient))}</h3>
-          <div class="meta-line">${escapeHtml(createdAt)} &middot; ${routine.exercises.length} ejercicios &middot; ${routine.active === false ? "inactiva" : "activa"}</div>
+          <div class="athlete-routine-meta">
+            <span class="routine-date">${escapeHtml(createdAt)}</span>
+            <span class="routine-exercises">${routine.exercises.length} ejercicios</span>
+            <span class="routine-state">${routine.active === false ? "Inactiva" : "Activa"}</span>
+          </div>
         </div>
         <span class="chip stable">${routine.active === false ? "pausada" : flexibilityRoutine ? "movilidad" : "asignada"}</span>
       </div>
@@ -11592,7 +11920,7 @@ function renderReadOnlyRoutine(routine, patient) {
           </div>
         </div>`}
       <div class="athlete-routine-actions">
-        <button class="primary-action athlete-primary-action" data-athlete-start-routine="${routine.id}" type="button" ${flexibilityRoutine ? 'data-training-objective="flexibility"' : "disabled"}>${flexibilityRoutine ? "Iniciar movilidad y flexibilidad" : "Seleccioná Fuerza o Potencia"}</button>
+        <button class="primary-action athlete-primary-action" data-athlete-start-routine="${routine.id}" type="button" ${flexibilityRoutine ? 'data-training-objective="flexibility"' : "disabled"}>Iniciar entrenamiento</button>
       </div>
       <div id="${bodyId}" class="exercise-list athlete-routine-exercises" data-athlete-routine-body="${routine.id}" hidden>
         ${routine.exercises.map((exercise) => `
@@ -11630,26 +11958,22 @@ function renderAthletePortal() {
   $("#athlete-name").textContent = patient.name;
   const athleteSubtitle = $("#athlete-subtitle");
   if (athleteSubtitle) {
-    athleteSubtitle.textContent = `Hola ${patient.name}. Este es tu espacio de entrenamiento.`;
+    athleteSubtitle.textContent = "Listo para entrenar hoy.";
   }
   const banner = $("#athlete-active-banner");
   if (banner) {
-    banner.hidden = !activeSession;
-    banner.innerHTML = activeSession ? `
-      <span>Tenes una sesion en curso</span>
-      <strong data-athlete-timer="${activeSession.id}">${formatDuration(elapsedSeconds(activeSession))}</strong>
-      <button class="primary-action compact-action athlete-primary-action" data-scroll-active-session type="button">Continuar</button>
-    ` : "";
+    banner.hidden = true;
+    banner.innerHTML = "";
   }
   $("#athlete-profile-card").innerHTML = `
     <details class="panel athlete-fold athlete-profile-fold athlete-card collapsible-card">
       <summary class="athlete-summary">
         <div>
-          <p class="eyebrow">Ficha personal</p>
           <h2><span class="athlete-profile-avatar">${escapeHtml(getInitials(patient.name))}</span>${escapeHtml(patient.name)}</h2>
-          <div class="meta-line">DNI ${escapeHtml(patient.dni || currentSession.dni)} &middot; ${stats.routines.length} rutinas &middot; ${stats.sessions.length} sesiones</div>
+          <div class="meta-line">DNI ${escapeHtml(patient.dni || currentSession.dni)}</div>
+          <div class="athlete-profile-routine-count">${stats.routines.length} ${stats.routines.length === 1 ? "rutina asignada" : "rutinas asignadas"}</div>
         </div>
-        <span class="chip stable">${escapeHtml(patient.phase || "activo")}</span>
+        <span class="athlete-profile-open">Ver ficha</span>
       </summary>
       <div class="athlete-kpi-grid">
         <article><span>Telefono</span><strong>${escapeHtml(patient.phone || "-")}</strong></article>
@@ -11676,12 +12000,13 @@ function renderAthletePortal() {
   $("#athlete-history-panel").innerHTML = `
     <details class="panel athlete-fold athlete-history-fold athlete-card collapsible-card">
       <summary class="athlete-summary">
-        <div>
-          <p class="eyebrow">Actividad</p>
-          <h2>Historial de sesiones</h2>
-          <div class="meta-line">${stats.sessions.length} sesiones &middot; ultima: ${lastSession ? formatDateTime(lastSession.finishedAt) : "sin registros"} &middot; progreso ${averageProgress}% &middot; volumen ${Math.round(totalVolume)}</div>
+        <div class="athlete-progress-ring" style="--progress:${averageProgress}%"><strong>${averageProgress}%</strong><span>Progreso</span></div>
+        <div class="athlete-progress-summary">
+          <h2>Tu progreso</h2>
+          <strong>Historial de sesiones</strong>
+          <div class="meta-line">${stats.sessions.length} sesiones completadas<br>Última: ${lastSession ? formatDateTime(lastSession.finishedAt) : "sin registros"}<br>Volumen total: ${Math.round(totalVolume)}</div>
         </div>
-        <span class="chip stable">${formatDuration(lastSession?.duration || 0)}</span>
+        <span class="athlete-progress-time">${formatDuration(lastSession?.duration || 0)}</span>
       </summary>
       <div class="entity-list">
         ${stats.sessions.map((item) => renderAthleteHistoryItem(item)).join("") || "<div class='empty-state'>Todavia no tenes sesiones registradas.</div>"}
@@ -13315,7 +13640,7 @@ function bindEvents() {
       if (startButton) {
         startButton.disabled = false;
         startButton.dataset.trainingObjective = objective;
-        startButton.textContent = `Iniciar ${getTrainingObjectiveLabel(objective)}`;
+        startButton.textContent = "Iniciar entrenamiento";
       }
       return;
     }
