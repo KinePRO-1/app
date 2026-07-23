@@ -5939,6 +5939,394 @@ canvas {
   body.athlete-mode .athlete-exercise-detail-redesigned .athlete-execution-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
 }
 
+/* =========================================================
+   Portal alumno: lectura rápida, rutina prioritaria e iconos
+   ========================================================= */
+body.athlete-mode {
+  background:
+    radial-gradient(circle at 88% 0%, rgba(184,255,26,.11), transparent 25%),
+    linear-gradient(160deg, #060806 0%, #090909 52%, #071006 100%);
+}
+
+body.athlete-mode .athlete-portal {
+  width: min(100%, 1220px) !important;
+  padding: clamp(18px, 3vw, 44px) clamp(14px, 3vw, 36px) 54px !important;
+}
+
+body.athlete-mode .athlete-topbar {
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) auto !important;
+  gap: 12px;
+  min-height: 0 !important;
+  margin-bottom: 14px !important;
+  padding: 0 4px 8px;
+  border: 0;
+  background: transparent;
+}
+body.athlete-mode .athlete-topbar > div:first-child { padding: 0 !important; }
+body.athlete-mode .athlete-topbar .eyebrow {
+  margin: 0 0 4px;
+  color: var(--accent);
+  font-size: .77rem;
+  font-weight: 1000;
+  letter-spacing: .02em;
+  text-transform: none;
+}
+body.athlete-mode .athlete-topbar h1 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(2rem, 4.8vw, 3.9rem);
+  line-height: .98;
+  letter-spacing: -.06em;
+}
+body.athlete-mode .athlete-topbar h1::before { color: var(--accent); content: "Hola, "; }
+body.athlete-mode .athlete-topbar .view-subtitle {
+  margin: 8px 0 0;
+  color: rgba(255,255,255,.65);
+  font-size: .92rem;
+  font-weight: 650;
+}
+body.athlete-mode .athlete-topbar .topbar-runner { display: none !important; }
+body.athlete-mode #athlete-logout {
+  align-self: end;
+  min-height: 42px;
+  padding: 0 18px;
+  border-radius: 14px;
+  color: #eaffc7;
+  font-size: .78rem;
+}
+body.athlete-mode #athlete-logout::before { margin-right: 8px; color: var(--accent); content: "↗"; font-size: 1rem; }
+
+body.athlete-mode .athlete-content {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(290px, .62fr) !important;
+  grid-template-areas:
+    "routines profile"
+    "routines history"
+    "session session";
+  align-items: start;
+  gap: clamp(14px, 2vw, 24px) !important;
+}
+body.athlete-mode .athlete-routines-panel { grid-area: routines; }
+body.athlete-mode #athlete-profile-card { grid-area: profile; }
+body.athlete-mode #athlete-history-panel { grid-area: history; }
+body.athlete-mode #athlete-session-panel { grid-area: session; }
+
+body.athlete-mode .athlete-routines-panel,
+body.athlete-mode #athlete-profile-card > .athlete-fold,
+body.athlete-mode #athlete-history-panel > .athlete-fold,
+body.athlete-mode .athlete-session-panel {
+  border: 1px solid rgba(255,255,255,.1) !important;
+  border-radius: 20px !important;
+  background: linear-gradient(145deg, rgba(22,25,22,.97), rgba(11,12,11,.98)) !important;
+  box-shadow: 0 18px 44px rgba(0,0,0,.26), inset 0 1px 0 rgba(255,255,255,.03) !important;
+}
+body.athlete-mode .athlete-routines-panel { padding: clamp(16px,2vw,25px) !important; }
+body.athlete-mode .athlete-routines-panel .section-head { margin-bottom: 14px !important; }
+body.athlete-mode .athlete-routines-panel .section-head .eyebrow { display: none; }
+body.athlete-mode .athlete-routines-panel .section-head h2 {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 0;
+  color: #fff !important;
+  font-size: clamp(1.08rem, 2vw, 1.45rem);
+}
+body.athlete-mode .athlete-routines-panel .section-head h2::before {
+  display: grid;
+  place-items: center;
+  width: 29px;
+  height: 29px;
+  border-radius: 9px;
+  background: rgba(184,255,26,.12);
+  color: var(--accent);
+  content: "⌁";
+  font-size: 1.25rem;
+  font-weight: 1000;
+}
+body.athlete-mode .athlete-routines-panel .section-head h2::after {
+  min-width: 52px;
+  margin-left: auto;
+  padding: 5px 9px;
+  border: 1px solid rgba(184,255,26,.34);
+  border-radius: 999px;
+  color: var(--accent);
+  content: "ACTIVA";
+  font-size: .58rem;
+  font-weight: 1000;
+  letter-spacing: .04em;
+  text-align: center;
+}
+
+body.athlete-mode .athlete-routine-card {
+  gap: 13px !important;
+  padding: clamp(15px,2vw,22px) !important;
+  border: 1px solid rgba(255,255,255,.095) !important;
+  border-radius: 18px !important;
+  background: linear-gradient(145deg, rgba(255,255,255,.065), rgba(255,255,255,.025)) !important;
+}
+body.athlete-mode .athlete-routine-card-head {
+  grid-template-columns: 44px minmax(0,1fr) auto !important;
+  gap: 11px !important;
+}
+body.athlete-mode .athlete-card-toggle {
+  position: relative;
+  border-color: rgba(184,255,26,.5) !important;
+  background: rgba(184,255,26,.1) !important;
+  color: transparent !important;
+}
+body.athlete-mode .athlete-card-toggle::before {
+  position: absolute;
+  inset: 7px;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  content: "";
+}
+body.athlete-mode .athlete-card-toggle::after {
+  position: absolute;
+  top: 50%; left: 50%; width: 2px; height: 15px;
+  background: var(--accent); box-shadow: -5px 0 0 var(--accent), 5px 0 0 var(--accent);
+  content: ""; transform: translate(-50%,-50%) rotate(34deg);
+}
+body.athlete-mode .athlete-card-toggle span { display: none; }
+body.athlete-mode .athlete-routine-copy h3 { color: #fff !important; font-size: clamp(1rem,1.9vw,1.28rem) !important; }
+body.athlete-mode .athlete-routine-copy .meta-line { color: rgba(255,255,255,.46); font-size: .74rem; }
+body.athlete-mode .athlete-routine-card > .chip {
+  border-color: rgba(184,255,26,.28);
+  background: rgba(184,255,26,.11);
+  color: var(--accent);
+  font-size: .61rem;
+}
+body.athlete-mode .athlete-goal { padding: 10px 12px; border-left: 2px solid var(--accent); background: rgba(184,255,26,.055); color: rgba(255,255,255,.7); font-size: .81rem; }
+body.athlete-mode .training-objective-picker {
+  margin: 0 !important;
+  padding: 13px !important;
+  border-color: rgba(255,255,255,.09) !important;
+  border-radius: 14px !important;
+  background: rgba(0,0,0,.24) !important;
+}
+body.athlete-mode .training-objective-picker > p { color: rgba(255,255,255,.7) !important; font-size: .67rem !important; }
+body.athlete-mode .training-objective-options { gap: 8px; }
+body.athlete-mode .training-objective-card {
+  position: relative;
+  min-height: 72px;
+  padding: 12px 44px 12px 50px;
+  border-color: rgba(255,255,255,.1) !important;
+  border-radius: 13px !important;
+  background: rgba(255,255,255,.04) !important;
+  color: #fff !important;
+}
+body.athlete-mode .training-objective-card::before {
+  position: absolute; left: 13px; top: 50%; display: grid; place-items: center; width: 25px; height: 25px;
+  border: 1px solid var(--accent); border-radius: 50%; color: var(--accent); content: "ϟ"; font-size: .9rem; font-weight: 1000; transform: translateY(-50%);
+}
+body.athlete-mode .training-objective-card::after { position:absolute; right:16px; top:50%; color:var(--accent); content:"›"; font-size:1.4rem; transform:translateY(-50%); }
+body.athlete-mode .training-objective-card span { color: rgba(255,255,255,.52) !important; }
+body.athlete-mode .training-objective-card.active { border-color: rgba(184,255,26,.66) !important; box-shadow: inset 0 0 0 1px rgba(184,255,26,.35) !important; }
+body.athlete-mode .athlete-routine-actions { display: block !important; }
+body.athlete-mode .athlete-routine-actions .primary-action { width: 100%; min-height: 46px; border-radius: 14px; font-size: .78rem; }
+
+body.athlete-mode #athlete-profile-card > .athlete-fold { padding: 0 !important; overflow: hidden; }
+body.athlete-mode .athlete-profile-fold .athlete-summary { min-height: 92px; padding: 16px !important; }
+body.athlete-mode .athlete-profile-fold .athlete-summary .eyebrow { display: none; }
+body.athlete-mode .athlete-profile-fold .athlete-summary h2 { display:flex; gap:10px; align-items:center; margin:0 0 5px; color:#fff; font-size:1rem; }
+body.athlete-mode .athlete-profile-avatar { display:grid; place-items:center; width:34px; height:34px; flex:0 0 34px; border:1px solid var(--accent); border-radius:50%; color:#fff; font-size:.65rem; font-weight:1000; }
+body.athlete-mode .athlete-profile-fold .athlete-summary .meta-line { color: rgba(255,255,255,.45); font-size:.69rem; }
+body.athlete-mode .athlete-profile-fold .athlete-summary > .chip { display: none; }
+body.athlete-mode .athlete-profile-fold .athlete-summary::after { color: var(--accent); }
+
+body.athlete-mode #athlete-history-panel > .athlete-fold { padding: 0 !important; overflow: hidden; }
+body.athlete-mode .athlete-history-fold .athlete-summary { min-height: 96px; padding: 16px !important; }
+body.athlete-mode .athlete-history-fold .eyebrow { display: none; }
+body.athlete-mode .athlete-history-fold h2 { display:flex; gap:8px; align-items:center; margin:0 0 5px; color:#fff; font-size:1rem; }
+body.athlete-mode .athlete-history-fold h2::before { display:grid; place-items:center; width:28px; height:28px; border-radius:9px; background:rgba(184,255,26,.12); color:var(--accent); content:"↗"; font-weight:1000; }
+body.athlete-mode .athlete-history-fold h2::after { content:"Tu progreso"; color:var(--accent); font-size:.78rem; font-weight:900; }
+body.athlete-mode .athlete-history-fold .meta-line { color:rgba(255,255,255,.46); font-size:.69rem; }
+
+body.athlete-mode .athlete-active-banner { border-radius: 16px; }
+body.athlete-mode .athlete-session-panel { padding: clamp(17px,2vw,28px) !important; }
+
+@media screen and (max-width: 820px) {
+  body.athlete-mode .athlete-content {
+    grid-template-columns: 1fr !important;
+    grid-template-areas: "profile" "routines" "session" "history";
+    gap: 12px !important;
+  }
+  body.athlete-mode .athlete-topbar { grid-template-columns: 1fr !important; }
+  body.athlete-mode #athlete-logout { width: 100%; }
+  body.athlete-mode .athlete-routine-card-head { grid-template-columns: 42px minmax(0,1fr) !important; }
+  body.athlete-mode .athlete-routine-card > .chip { grid-column: 2; justify-self: start; }
+}
+@media screen and (max-width: 480px) {
+  body.athlete-mode .athlete-portal { padding: 16px 12px 38px !important; }
+  body.athlete-mode .athlete-topbar h1 { font-size: 2.3rem; }
+  body.athlete-mode .athlete-routines-panel { padding: 13px !important; border-radius: 16px !important; }
+  body.athlete-mode .athlete-routine-card { padding: 13px !important; border-radius: 15px !important; }
+  body.athlete-mode .training-objective-options { grid-template-columns: 1fr !important; }
+  body.athlete-mode .athlete-profile-fold .athlete-summary,
+  body.athlete-mode .athlete-history-fold .athlete-summary { padding: 14px !important; }
+}
+
+/* =========================================================
+   Panel administrador: composición operativa KINEPRO
+   ========================================================= */
+body.admin-mode {
+  min-width: 0;
+  background:
+    radial-gradient(circle at 78% 12%, rgba(184,255,26,.07), transparent 24%),
+    #050505;
+}
+
+body.admin-mode .app-shell {
+  display: grid !important;
+  grid-template-columns: 262px minmax(0, 1fr);
+  gap: clamp(18px, 2vw, 30px);
+  min-height: 100dvh;
+  padding: clamp(12px, 2vw, 28px);
+  background: transparent;
+}
+
+body.admin-mode .sidebar {
+  position: sticky;
+  top: clamp(12px, 2vw, 28px);
+  display: flex;
+  flex-direction: column;
+  align-self: start;
+  height: calc(100dvh - clamp(24px, 4vw, 56px));
+  min-height: 620px;
+  padding: 32px 20px 20px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 14px;
+  background: linear-gradient(145deg, #111 0%, #080808 68%, #0d1009 100%);
+  box-shadow: 0 30px 80px rgba(0,0,0,.48), inset 0 1px 0 rgba(255,255,255,.045);
+}
+
+body.admin-mode .sidebar-logo {
+  padding: 12px 14px 42px;
+  color: #fff;
+  font-size: clamp(1.8rem, 2.3vw, 2.55rem);
+  font-style: italic;
+  font-weight: 1000;
+  letter-spacing: -2px;
+}
+body.admin-mode .sidebar-logo span { color: var(--accent); }
+body.admin-mode .tabs { display: grid; gap: 10px; }
+body.admin-mode .tab {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  align-items: center;
+  min-height: 66px;
+  padding: 0 18px;
+  border: 1px solid transparent;
+  border-radius: 18px;
+  color: rgba(255,255,255,.83);
+  background: transparent;
+  font-size: 1rem;
+  font-weight: 850;
+  text-align: left;
+}
+body.admin-mode .tab:hover,
+body.admin-mode .tab.active {
+  border-color: rgba(184,255,26,.68);
+  background: linear-gradient(90deg, rgba(184,255,26,.18), rgba(184,255,26,.025));
+  color: #fff;
+  box-shadow: inset 3px 0 0 var(--accent), 0 0 26px rgba(184,255,26,.06);
+}
+body.admin-mode .tab-icon { width: 22px; height: 22px; opacity: .96; }
+body.admin-mode .sync-card.admin-user-card {
+  display: grid;
+  grid-template-columns: 12px minmax(0,1fr);
+  gap: 12px;
+  margin-top: auto;
+  padding: 18px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 18px;
+  background: rgba(255,255,255,.035);
+}
+body.admin-mode .admin-user-card::before {
+  display: grid; place-items: center; width: 42px; height: 42px; margin: 0 0 10px;
+  border-radius: 4px; background: var(--accent); color: #070707; content: "JM"; font-size: .78rem; font-weight: 1000;
+}
+body.admin-mode .admin-user-card .status-dot { display: none; }
+body.admin-mode .admin-user-card strong { color: #fff; }
+body.admin-mode .admin-user-card em { color: var(--accent); font-style: normal; font-weight: 800; }
+body.admin-mode .admin-user-card small { display: none; }
+
+body.admin-mode .workspace { min-width: 0; padding: 0; }
+body.admin-mode .workspace > .topbar,
+body.admin-mode .workspace > .view.active { width: min(100%, 1540px); }
+body.admin-mode .topbar {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0,1fr) auto auto minmax(220px,255px);
+  align-items: end;
+  min-height: 360px;
+  padding: clamp(28px,4vw,54px);
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.075);
+  border-radius: 26px;
+  background:
+    radial-gradient(ellipse at 86% 55%, rgba(184,255,26,.19), transparent 24%),
+    linear-gradient(105deg, #111 0%, #0a0a0a 57%, #131612 100%);
+  box-shadow: 0 30px 76px rgba(0,0,0,.36);
+}
+body.admin-mode .topbar::after {
+  position: absolute; right: -6%; bottom: -62%; width: min(42vw,560px); height: min(42vw,560px);
+  border: 42px solid rgba(255,255,255,.055); border-left-color: rgba(184,255,26,.42); border-radius: 50%;
+  box-shadow: 0 0 0 36px rgba(0,0,0,.19), 0 0 100px rgba(184,255,26,.12); content: ""; transform: rotate(-22deg);
+}
+body.admin-mode .topbar > * { position: relative; z-index: 1; }
+body.admin-mode .topbar .page-copy { align-self: center; padding: 0; }
+body.admin-mode .page-copy .eyebrow { color: rgba(255,255,255,.62); font-size: .78rem; font-weight: 900; letter-spacing: .04em; }
+body.admin-mode .page-copy h1 { max-width: 650px; margin: 15px 0 20px; color: #fff; font-size: clamp(2.65rem,5vw,5.8rem); line-height: .93; letter-spacing: -0.07em; }
+body.admin-mode .page-copy h1::first-letter { color: var(--accent); }
+body.admin-mode .view-subtitle { max-width: 520px; color: rgba(255,255,255,.74); font-size: 1.05rem; font-weight: 650; }
+body.admin-mode .top-create { background: var(--accent); color: #071000; border: 0; box-shadow: 0 12px 28px rgba(184,255,26,.2); }
+body.admin-mode .topbar .clock-panel { padding: 15px 18px; border: 1px solid rgba(255,255,255,.13); border-radius: 16px; background: rgba(8,8,8,.66); }
+body.admin-mode .clock-panel strong { color: var(--accent); font-size: clamp(1.2rem,2vw,1.8rem); }
+
+body.admin-mode .metric-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 16px; margin: 26px 0; }
+body.admin-mode .metric {
+  min-height: 190px; padding: 24px; border: 1px solid rgba(255,255,255,.1); border-radius: 22px;
+  background: linear-gradient(145deg, #121212, #0a0a0a); box-shadow: 0 18px 45px rgba(0,0,0,.25);
+}
+body.admin-mode .metric span { color: rgba(255,255,255,.63); font-weight: 850; text-transform: uppercase; }
+body.admin-mode .metric strong { color: #fff; font-size: clamp(2.1rem,4vw,3.45rem); }
+body.admin-mode .metric small { color: rgba(255,255,255,.56); }
+body.admin-mode .operational-panel { min-height: 270px; background: linear-gradient(150deg,#111 0%,#0b0b0b 64%,#172012 100%); }
+body.admin-mode .panel, body.admin-mode .entity-card, body.admin-mode .session-card { border-color: rgba(255,255,255,.1); background: linear-gradient(145deg,#121212,#0b0b0b); }
+body.admin-mode .view.active { padding-bottom: 30px; }
+body.admin-mode .flexibility-picker { border-color: rgba(184,255,26,.48); background: linear-gradient(135deg,rgba(184,255,26,.15),rgba(184,255,26,.025)); }
+body.admin-mode #routine-modality { border-color: rgba(184,255,26,.3); }
+
+@media screen and (max-width: 1180px) {
+  body.admin-mode .app-shell { grid-template-columns: 82px minmax(0,1fr); }
+  body.admin-mode .sidebar { padding: 22px 10px; }
+  body.admin-mode .sidebar-logo { padding: 5px 0 35px; font-size: 0; text-align: center; }
+  body.admin-mode .sidebar-logo::first-letter { font-size: 2rem; }
+  body.admin-mode .tab { grid-template-columns: 1fr; justify-items: center; padding: 0; }
+  body.admin-mode .tab > span:last-child { display: none; }
+  body.admin-mode .admin-user-card { grid-template-columns: 1fr !important; justify-items: center; padding: 12px !important; }
+  body.admin-mode .admin-user-card > div { display: none; }
+  body.admin-mode .metric-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media screen and (max-width: 760px) {
+  body.admin-mode .app-shell { grid-template-columns: 1fr; gap: 14px; padding: 10px; }
+  body.admin-mode .sidebar { position: relative; top: auto; height: auto; min-height: 0; padding: 10px; border-radius: 18px; }
+  body.admin-mode .sidebar-logo, body.admin-mode .sync-card.admin-user-card { display: none; }
+  body.admin-mode .tabs { grid-template-columns: repeat(5,minmax(0,1fr)); gap: 5px; }
+  body.admin-mode .tab { min-height: 54px; border-radius: 13px; }
+  body.admin-mode .topbar { grid-template-columns: repeat(2,minmax(0,1fr)); min-height: 0; padding: 26px 20px 20px; border-radius: 22px; }
+  body.admin-mode .topbar::after { width: 230px; height: 230px; right: -100px; bottom: -150px; border-width: 24px; }
+  body.admin-mode .topbar .page-copy { grid-column: 1 / -1; }
+  body.admin-mode .page-copy h1 { font-size: clamp(2.55rem,12vw,4.15rem); }
+  body.admin-mode .topbar .top-create, body.admin-mode .topbar #session-logout { width: 100%; }
+  body.admin-mode .topbar .clock-panel { grid-column: 1 / -1; }
+  body.admin-mode .metric-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; margin: 14px 0; }
+  body.admin-mode .metric { min-height: 145px; padding: 17px; border-radius: 18px; }
+  body.admin-mode #dashboard .split-layout { grid-template-columns: 1fr; gap: 14px; }
+}
+
 @media screen and (max-width: 430px) {
   body.athlete-mode .athlete-session-head-redesigned { grid-template-columns: 1fr !important; }
   .athlete-session-time-block { justify-items: start; }
@@ -5989,6 +6377,152 @@ canvas {
   body.athlete-mode .athlete-exercise-card-redesigned {
     min-height: 0 !important;
   }
+}
+
+/* Auditoría de layout: anulaciones finales contra superposiciones. */
+html, body { max-width: 100%; overflow-x: clip; }
+
+body.athlete-mode .athlete-portal,
+body.athlete-mode .athlete-content,
+body.athlete-mode .athlete-content > *,
+body.athlete-mode .athlete-routines-panel,
+body.athlete-mode .athlete-routine-card,
+body.athlete-mode .athlete-session-panel,
+body.athlete-mode .athlete-fold,
+body.athlete-mode .athlete-summary,
+body.athlete-mode .training-objective-picker,
+body.athlete-mode .training-objective-card {
+  min-width: 0 !important;
+  max-width: 100%;
+}
+
+body.athlete-mode .athlete-content > *,
+body.athlete-mode .athlete-routine-card,
+body.athlete-mode .athlete-session-panel,
+body.athlete-mode .athlete-fold {
+  position: relative;
+  inset: auto;
+}
+
+body.athlete-mode .athlete-routines-panel,
+body.athlete-mode #athlete-profile-card,
+body.athlete-mode #athlete-history-panel,
+body.athlete-mode #athlete-session-panel {
+  align-self: start;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+}
+
+body.athlete-mode .athlete-routine-card-head,
+body.athlete-mode .athlete-session-head-redesigned,
+body.athlete-mode .athlete-exercise-card-top,
+body.athlete-mode .athlete-exercise-card-footer,
+body.athlete-mode .athlete-dosage-grid,
+body.athlete-mode .athlete-execution-grid {
+  min-width: 0;
+}
+
+body.athlete-mode .athlete-routine-copy,
+body.athlete-mode .athlete-session-title-block,
+body.athlete-mode .athlete-exercise-main,
+body.athlete-mode .athlete-summary > div {
+  min-width: 0;
+}
+
+body.athlete-mode .athlete-routine-copy h3,
+body.athlete-mode .athlete-session-title-block h2,
+body.athlete-mode .athlete-exercise-main h3,
+body.athlete-mode .athlete-summary h2,
+body.athlete-mode .meta-line,
+body.athlete-mode .training-objective-card span {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+@media screen and (max-width: 1024px) {
+  body.athlete-mode .athlete-content {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-areas: "profile" "routines" "session" "history" !important;
+  }
+
+  body.athlete-mode .athlete-topbar {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  body.athlete-mode .athlete-topbar {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  body.athlete-mode #athlete-logout,
+  body.athlete-mode .athlete-routine-actions .primary-action {
+    width: 100%;
+  }
+
+  body.athlete-mode .athlete-routine-card-head,
+  body.athlete-mode .athlete-exercise-card-top {
+    grid-template-columns: 42px minmax(0, 1fr) !important;
+  }
+
+  body.athlete-mode .athlete-session-head-redesigned {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  body.athlete-mode .athlete-routine-card > .chip,
+  body.athlete-mode .athlete-session-time-block,
+  body.athlete-mode .athlete-done-button {
+    grid-column: 1 / -1;
+    justify-self: stretch;
+  }
+
+  body.athlete-mode .athlete-session-time-block { justify-items: start; }
+  body.athlete-mode .athlete-done-button { width: 100%; }
+  body.athlete-mode .athlete-dosage-grid,
+  body.athlete-mode .athlete-execution-grid { grid-template-columns: minmax(0, 1fr) !important; }
+}
+
+/* Escritorio compacto e iPad: no se fuerza la cabecera sobre el contenido. */
+@media screen and (max-width: 1320px) and (min-width: 761px) {
+  body.admin-mode .app-shell {
+    grid-template-columns: 82px minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  body.admin-mode .sidebar { padding: 22px 10px; }
+  body.admin-mode .sidebar-logo { padding: 5px 0 35px; font-size: 0; text-align: center; }
+  body.admin-mode .sidebar-logo::first-letter { font-size: 2rem; }
+  body.admin-mode .tab { grid-template-columns: 1fr; justify-items: center; padding: 0; }
+  body.admin-mode .tab > span:last-child,
+  body.admin-mode .admin-user-card > div { display: none; }
+  body.admin-mode .admin-user-card { grid-template-columns: 1fr !important; justify-items: center; padding: 12px !important; }
+
+  body.admin-mode .topbar {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    min-height: 300px;
+  }
+  body.admin-mode .topbar .page-copy { grid-column: 1 / -1; grid-row: 1; }
+  body.admin-mode .topbar .top-create { grid-column: 1; grid-row: 2; justify-self: start; }
+  body.admin-mode .topbar #session-logout { grid-column: 2; grid-row: 2; }
+  body.admin-mode .topbar .clock-panel { grid-column: 3; grid-row: 2; min-width: 190px; }
+  body.admin-mode .page-copy h1 { font-size: clamp(2.4rem, 5.2vw, 4.5rem); }
+}
+
+@media screen and (max-width: 760px) {
+  body.admin-mode .workspace,
+  body.admin-mode .workspace > .topbar,
+  body.admin-mode .workspace > .view.active,
+  body.admin-mode .module-grid,
+  body.admin-mode .split-layout,
+  body.admin-mode .panel,
+  body.admin-mode .entity-card,
+  body.admin-mode .session-card { min-width: 0; max-width: 100%; }
+
+  body.admin-mode .topbar > *,
+  body.admin-mode .metric-grid > *,
+  body.admin-mode .section-head > * { min-width: 0; }
 }
 </style>
   </head>
@@ -6195,6 +6729,12 @@ canvas {
                 <select name="patientId" id="routine-patient" required></select>
               </label>
               <label>Objetivo<textarea name="goal" rows="2" placeholder="Mejorar rango articular, fuerza y tolerancia"></textarea></label>
+              <label>Modalidad de la rutina
+                <select name="modality" id="routine-modality">
+                  <option value="strength_power">Fuerza y potencia</option>
+                  <option value="flexibility">Movilidad y Flexibilidad</option>
+                </select>
+              </label>
               <div class="exercise-library">
                 <div class="section-head compact-head">
                   <div>
@@ -6499,7 +7039,7 @@ let applyingRemoteState = false;
 let cloudEnabled = false;
 
 const views = {
-  dashboard: "Bienvenido, Juan-Manuel",
+  dashboard: "Bienvenido, Juan Manuel",
   patients: "Pacientes",
   routines: "Rutinas",
   sessions: "Ejecucion",
@@ -11007,12 +11547,17 @@ function getExerciseRepsForVolume(reps) {
 }
 
 function getTrainingObjectiveLabel(objective) {
-  return objective === "strength" ? "Fuerza" : objective === "power" ? "Potencia" : "Sin definir";
+  return objective === "strength" ? "Fuerza" : objective === "power" ? "Potencia" : objective === "flexibility" ? "Movilidad y Flexibilidad" : "Sin definir";
+}
+
+function getRoutineModality(routine) {
+  return routine?.modality === "flexibility" ? "flexibility" : "strength_power";
 }
 
 function renderReadOnlyRoutine(routine, patient) {
   const createdAt = routine.createdAt ? formatDateTime(routine.createdAt).split(",")[0] : "Sin fecha";
   const bodyId = `athlete-routine-body-${routine.id}`;
+  const flexibilityRoutine = getRoutineModality(routine) === "flexibility";
   return `
     <article class="entity-card athlete-routine-card athlete-card">
       <div class="athlete-routine-card-head">
@@ -11023,22 +11568,31 @@ function renderReadOnlyRoutine(routine, patient) {
           <h3>${escapeHtml(getRoutineDisplayName(routine, patient))}</h3>
           <div class="meta-line">${escapeHtml(createdAt)} &middot; ${routine.exercises.length} ejercicios &middot; ${routine.active === false ? "inactiva" : "activa"}</div>
         </div>
-        <span class="chip stable">${routine.active === false ? "pausada" : "asignada"}</span>
+        <span class="chip stable">${routine.active === false ? "pausada" : flexibilityRoutine ? "movilidad" : "asignada"}</span>
       </div>
       ${routine.goal ? `<p class="athlete-goal">${escapeHtml(routine.goal)}</p>` : ""}
-      <div class="training-objective-picker" data-routine-objective-picker="${routine.id}">
-        <p>Elegí el objetivo de esta sesión</p>
-        <div class="training-objective-options">
-          <button class="training-objective-card" data-select-routine-objective="${routine.id}:strength" type="button" aria-pressed="false">
-            <strong>Fuerza</strong><span>3 series de 6 reps · 80–95% de la capacidad máxima</span>
-          </button>
-          <button class="training-objective-card" data-select-routine-objective="${routine.id}:power" type="button" aria-pressed="false">
-            <strong>Potencia</strong><span>3 series de 10–8 reps · 30–40% de la capacidad máxima</span>
-          </button>
-        </div>
-      </div>
+      ${flexibilityRoutine ? `
+        <div class="training-objective-picker flexibility-picker" data-routine-objective-picker="${routine.id}">
+          <p>Modalidad de esta sesión</p>
+          <div class="training-objective-options">
+            <button class="training-objective-card active" data-select-routine-objective="${routine.id}:flexibility" type="button" aria-pressed="true">
+              <strong>Movilidad y Flexibilidad</strong><span>Movilidad, elongación y control corporal. Sin pesos ni carga recomendada.</span>
+            </button>
+          </div>
+        </div>` : `
+        <div class="training-objective-picker" data-routine-objective-picker="${routine.id}">
+          <p>Elegí el objetivo de esta sesión</p>
+          <div class="training-objective-options">
+            <button class="training-objective-card" data-select-routine-objective="${routine.id}:strength" type="button" aria-pressed="false">
+              <strong>Fuerza</strong><span>3 series de 6 reps · 80–95% de la capacidad máxima</span>
+            </button>
+            <button class="training-objective-card" data-select-routine-objective="${routine.id}:power" type="button" aria-pressed="false">
+              <strong>Potencia</strong><span>3 series de 10–8 reps · 30–40% de la capacidad máxima</span>
+            </button>
+          </div>
+        </div>`}
       <div class="athlete-routine-actions">
-        <button class="primary-action athlete-primary-action" data-athlete-start-routine="${routine.id}" type="button" disabled>Seleccioná Fuerza o Potencia</button>
+        <button class="primary-action athlete-primary-action" data-athlete-start-routine="${routine.id}" type="button" ${flexibilityRoutine ? 'data-training-objective="flexibility"' : "disabled"}>${flexibilityRoutine ? "Iniciar movilidad y flexibilidad" : "Seleccioná Fuerza o Potencia"}</button>
       </div>
       <div id="${bodyId}" class="exercise-list athlete-routine-exercises" data-athlete-routine-body="${routine.id}" hidden>
         ${routine.exercises.map((exercise) => `
@@ -11092,7 +11646,7 @@ function renderAthletePortal() {
       <summary class="athlete-summary">
         <div>
           <p class="eyebrow">Ficha personal</p>
-          <h2>${escapeHtml(patient.name)}</h2>
+          <h2><span class="athlete-profile-avatar">${escapeHtml(getInitials(patient.name))}</span>${escapeHtml(patient.name)}</h2>
           <div class="meta-line">DNI ${escapeHtml(patient.dni || currentSession.dni)} &middot; ${stats.routines.length} rutinas &middot; ${stats.sessions.length} sesiones</div>
         </div>
         <span class="chip stable">${escapeHtml(patient.phase || "activo")}</span>
@@ -11161,8 +11715,10 @@ function renderAthleteActiveSession(session) {
     <div class="active-objective-switch athlete-objective-redesigned" role="group" aria-label="Objetivo de la sesión">
       <div><span>Objetivo de la sesión</span><small>Las cargas se recalculan automáticamente</small></div>
       <div class="athlete-objective-buttons">
-        <button class="${session.trainingObjective === "strength" ? "active" : ""}" data-session-objective="${session.id}:strength" type="button" aria-pressed="${session.trainingObjective === "strength"}">Fuerza</button>
-        <button class="${session.trainingObjective === "power" ? "active" : ""}" data-session-objective="${session.id}:power" type="button" aria-pressed="${session.trainingObjective === "power"}">Potencia</button>
+        ${session.trainingObjective === "flexibility"
+          ? `<button class="active" data-session-objective="${session.id}:flexibility" type="button" aria-pressed="true">Movilidad y Flexibilidad</button>`
+          : `<button class="${session.trainingObjective === "strength" ? "active" : ""}" data-session-objective="${session.id}:strength" type="button" aria-pressed="${session.trainingObjective === "strength"}">Fuerza</button>
+             <button class="${session.trainingObjective === "power" ? "active" : ""}" data-session-objective="${session.id}:power" type="button" aria-pressed="${session.trainingObjective === "power"}">Potencia</button>`}
       </div>
     </div>
 
@@ -11217,7 +11773,7 @@ function renderAthleteActiveSession(session) {
               <div class="athlete-execution-grid">
                 <label>Series realizadas<input data-athlete-input="${session.id}:${exercise.id}:actualSets" inputmode="numeric" value="${escapeHtml(exercise.actualSets || "")}" placeholder="${escapeHtml(String(sets || ""))}"></label>
                 <label>Repeticiones realizadas<input data-athlete-input="${session.id}:${exercise.id}:actualReps" inputmode="numeric" value="${escapeHtml(exercise.actualReps || "")}" placeholder="${escapeHtml(String(reps || ""))}"></label>
-                <label>Carga utilizada (kg)<input data-athlete-input="${session.id}:${exercise.id}:actualLoad" inputmode="decimal" value="${escapeHtml(loadToInputValue(exercise.actualLoad || ""))}" placeholder=""></label>
+                ${session.trainingObjective !== "flexibility" ? `<label>Carga utilizada (kg)<input data-athlete-input="${session.id}:${exercise.id}:actualLoad" inputmode="decimal" value="${escapeHtml(loadToInputValue(exercise.actualLoad || ""))}" placeholder=""></label>` : ""}
                 <label>Tiempo (seg)<input data-athlete-input="${session.id}:${exercise.id}:actualSeconds" inputmode="numeric" value="${escapeHtml(exercise.actualSeconds || "")}" placeholder="${escapeHtml(exercise.seconds || "")}"></label>
               </div>
               <label class="athlete-notes-input">Observaciones<textarea data-athlete-input="${session.id}:${exercise.id}:athleteNotes" rows="2" placeholder="Notas de esta ejecución">${escapeHtml(exercise.athleteNotes || "")}</textarea></label>
@@ -11960,6 +12516,7 @@ function addRoutine(event) {
     patientId: form.get("patientId"),
     name: form.get("name").trim(),
     goal: form.get("goal").trim(),
+    modality: form.get("modality") === "flexibility" ? "flexibility" : "strength_power",
     obs: form.get("goal").trim(),
     type: form.get("template") === "on" ? "template" : "assigned",
     date: new Date().toISOString(),
@@ -11997,6 +12554,7 @@ function editRoutine(routineId) {
   form.elements.name.value = routine.name || "";
   form.elements.patientId.value = routine.patientId || "";
   form.elements.goal.value = routine.goal || "";
+  form.elements.modality.value = getRoutineModality(routine);
   form.elements.template.checked = Boolean(routine.template);
   exerciseDraft = routine.exercises.map((exercise) => {
     const dosage = splitExercisePrescription(exercise);
@@ -12354,7 +12912,12 @@ function startAthleteRoutine(routineId, trainingObjective) {
   const patient = getAthletePatient();
   const routine = getRoutine(routineId);
   if (!patient || !routine || routine.patientId !== patient.id) return;
-  if (!["strength", "power"].includes(trainingObjective)) {
+  const expectedObjective = getRoutineModality(routine) === "flexibility" ? "flexibility" : "";
+  if (expectedObjective && trainingObjective !== expectedObjective) {
+    window.alert("Esta rutina se realiza en modalidad Movilidad y Flexibilidad.");
+    return;
+  }
+  if (!["strength", "power", "flexibility"].includes(trainingObjective)) {
     window.alert("Seleccioná Fuerza o Potencia antes de iniciar la rutina.");
     return;
   }
@@ -12401,12 +12964,12 @@ function startAthleteRoutine(routineId, trainingObjective) {
 }
 
 function updateAthleteSessionObjective(sessionId, trainingObjective) {
-  if (!["strength", "power"].includes(trainingObjective)) return;
+  if (!["strength", "power", "flexibility"].includes(trainingObjective)) return;
   const session = getAthleteOwnedSession(sessionId);
   if (!session) return;
   session.trainingObjective = trainingObjective;
   const dosage = getTrainingDosage(trainingObjective);
-  session.exercises.forEach((exercise) => {
+  if (dosage) session.exercises.forEach((exercise) => {
     exercise.sets = dosage.sets;
     exercise.reps = dosage.reps;
   });
